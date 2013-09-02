@@ -56,6 +56,16 @@
 
 	};
 
+	ui.event.bindCompile = function(callback){
+
+		$('#operate button[type=submit]').click(function(){
+
+			callback($('#taskInfo select').val());
+
+		});
+
+	};
+
 
 	window.ui = ui;
 
