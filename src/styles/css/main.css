@@ -141,3 +141,6 @@ body {
   cursor: pointer;
   background-image: -webkit-linear-gradient(top, #ffacac, #ffa0a8);
 }
+#operate button[type=submit]:hover {
+  background-image: -webkit-linear-gradient(top, #ffb6b6, #ffaab1);
+}

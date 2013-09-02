@@ -24,7 +24,7 @@
 
 }
 
-.btn(){
+.btn(@top:#FFACAC,@bottom:#FFA0A8){
 	padding:8px 20px;
 	font-size: 18px;
 	color:white;
@@ -35,7 +35,11 @@
 		inset 1px 0 1px #FFB7BF,
 		inset -1px 0 1px #FE7676;
 	cursor:pointer;
-	.gradient(#FFACAC,#FFA0A8);
+	.gradient(@top,@bottom);
+
+	&:hover{
+		.gradient(lighten(@top,2%),lighten(@bottom,2%));
+	}
 }
 
 html,body{
