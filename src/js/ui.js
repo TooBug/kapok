@@ -42,10 +42,26 @@
 
 	};
 
+	// 事件绑定
+
+	ui.event = {};
+
+	ui.event.bindTaskSwitch = function(callback){
+
+		$('#taskInfo select').change(function(){
+
+			callback($(this).val());
+
+		});
+
+	};
+
 
 	window.ui = ui;
-	
-}(window,window.jQuery);
+
+
+
+}(window,jQuery);
 
 /**
  * 微型模板引擎 https://github.com/TooooBug/MicroTmpl/

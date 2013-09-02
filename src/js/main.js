@@ -42,6 +42,9 @@
 
 $(function(){
 
+	// 绑定任务切换事件
+	ui.event.bindTaskSwitch(kapok.initTask);
+
 	kapok.test();
 	
 });
