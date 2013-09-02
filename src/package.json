@@ -1,0 +1,11 @@
+{
+	"name":"kapok",
+	"main":"index.html",
+	"window":{
+		"icon": "icon.png",
+		// "frame":false,
+		// "toolbar": false,
+		"width":600,
+		"height":450
+	}
+}

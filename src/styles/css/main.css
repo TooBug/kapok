@@ -1,0 +1,143 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  -webkit-user-select: none;
+  height: 100%;
+  font-family: helveticaneue-light, helvetia neue light, helvetia neue, hiragino sans gb, microsoft yahei, serif;
+  color: #ffffff;
+}
+input,
+textarea {
+  -webkit-user-select: text;
+}
+header {
+  padding: 0 30px;
+  height: 30px;
+  line-height: 30px;
+  -webkit-app-region: drag;
+  background: url(../../images/logo_32.png) 2px 2px no-repeat;
+  background-size: 24px 24px;
+}
+header a {
+  margin-top: 5px;
+  display: block;
+  float: right;
+  width: 20px;
+  height: 20px;
+  background: url(../../images/icons.png) no-repeat;
+  opacity: .8;
+}
+header a:hover {
+  opacity: 1;
+}
+header a.min_btn {
+  background-position: 0 0;
+}
+header a.max_btn {
+  background-position: -30px 0;
+}
+header a.close_btn {
+  background-position: -60px 0;
+}
+body {
+  background-image: -webkit-linear-gradient(top, #ff8989, #f83b42);
+}
+#taskInfo {
+  margin: 20px 30px 10px 30px;
+  padding: 15px 0 5px 0;
+  border-bottom: 1px solid white;
+}
+#taskInfo .projectName {
+  float: left;
+  font-size: 24px;
+  vertical-align: bottom;
+}
+#taskInfo .taskList {
+  float: right;
+  position: relative;
+  left: 25px;
+  margin-top: 10px;
+  vertical-align: bottom;
+}
+#taskInfo .taskList select {
+  -webkit-appearance: none;
+  background: transparent;
+  color: white;
+  border: 0 none;
+  font-size: 14px;
+  padding-right: 20px;
+  outline: none;
+}
+#taskInfo .taskList .currTask_icon {
+  display: inline-block;
+  position: relative;
+  left: -25px;
+  width: 25px;
+  height: 20px;
+  pointer-events: none;
+  background: url("../../images/icons.png") -90px 0;
+}
+#taskInfo::after {
+  display: block;
+  content: ' ';
+  visibility: hidden;
+  clear: both;
+}
+#jobList {
+  margin: 0 30px;
+  height: 250px;
+  overflow: auto;
+  list-style: none;
+}
+#jobList li {
+  margin-bottom: 10px;
+  height: 32px;
+  line-height: 32px;
+  font-size: 18px;
+}
+#jobList li .icon {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: url("../../images/icons.png");
+}
+#jobList li.done .icon {
+  background-position: 4px -25px;
+}
+#jobList li.doing .icon,
+#jobList li.waiting .icon {
+  background-position: -26px -25px;
+}
+#jobList li .title {
+  display: inline-block;
+  width: -webkit-calc(100% - 60px);
+  padding-left: 1em;
+  background-repeat: no-repeat;
+}
+#jobList li.doing .title,
+#jobList li.done .title {
+  background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
+}
+#jobList li.doing .title {
+  background-size: 30% 100%;
+}
+#operate {
+  /*padding-top: 40px;*/
+
+  padding-right: 30px;
+  text-align: right;
+}
+#operate button[type=submit] {
+  padding: 8px 20px;
+  font-size: 18px;
+  color: white;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  border: 0 none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.5), inset 1px 0 1px #ffb7bf, inset -1px 0 1px #fe7676;
+  cursor: pointer;
+  background-image: -webkit-linear-gradient(top, #ffacac, #ffa0a8);
+}

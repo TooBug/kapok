@@ -1,0 +1,26 @@
+{
+  "name": "kapok",
+  "version": "0.0.1",
+  "description": "f2e build factory",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TooBug/kapok"
+  },
+  "keywords": [
+    "build",
+    "f2e",
+    "css",
+    "js",
+    "compress",
+    "concat"
+  ],
+  "author": "TooBug",
+  "license": "MIT",
+  "dependencies": {
+    "uglify-js": "~2.3.6"
+  }
+}

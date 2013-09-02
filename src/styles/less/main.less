@@ -1,0 +1,102 @@
+@import "base.less";
+
+body{
+	.gradient(@bg_light,@bg_dark);
+}
+
+#taskInfo{
+	margin:20px 30px 10px 30px;
+	padding:15px 0 5px 0;
+	border-bottom:1px solid white;
+	.projectName{
+		float: left;
+		font-size: 24px;
+		vertical-align: bottom;
+	}
+	.taskList{
+		float:right;
+		position: relative;
+		left:25px;
+		margin-top: 10px;
+		vertical-align: bottom;
+		select{
+			-webkit-appearance: none;
+			background: transparent;
+			color: white;
+			border: 0 none;
+			font-size: 14px;
+			padding-right: 20px;
+			outline: none;
+		}
+		.currTask_icon{
+			display: inline-block;
+			position: relative;
+			left:-25px;
+			width:25px;
+			height:20px;
+			pointer-events:none;
+			background:url("@{bgUrlBase}icons.png") -90px 0;
+		}
+
+	}
+	&::after{
+		display: block;
+		content:' ';
+		visibility: hidden;
+		clear: both;
+	}
+}
+
+.offsetIcon(@x,@y){
+	background-position: @x + 4px @y + 5px;
+}
+
+#jobList{
+	margin:0 30px;
+	height:250px;
+	overflow: auto;
+	list-style: none;
+	li{
+		margin-bottom: 10px;
+		height:32px;
+		line-height: 32px;
+		font-size: 18px;
+		.icon{
+			display: inline-block;
+			width:22px;
+			height:22px;
+			background:url("@{bgUrlBase}icons.png");
+		}
+		&.done .icon{
+			.offsetIcon(0,-30px);
+		}
+		&.doing .icon,
+		&.waiting .icon{
+			.offsetIcon(-30px,-30px);
+		}
+
+		.title{
+			display: inline-block;
+			width: ~"-webkit-calc(100% - 60px)";
+			padding-left: 1em;
+			background-repeat: no-repeat;
+		}
+		&.doing .title,
+		&.done .title{
+			.gradient(left,rgba(255,255,255,.5),rgba(255,255,255,.1));
+		}
+		//测试用
+		&.doing .title{
+			background-size: 30% 100%;
+		}
+	}
+}
+
+#operate{
+	/*padding-top: 40px;*/
+	padding-right: 30px;
+	text-align: right;
+	button[type=submit]{
+		.btn();
+	}
+}
