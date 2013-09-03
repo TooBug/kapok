@@ -80,14 +80,19 @@ body{
 			width: ~"-webkit-calc(100% - 60px)";
 			padding-left: 1em;
 			background-repeat: no-repeat;
+			.gradient(left,rgba(255,255,255,.5),rgba(255,255,255,.1));
+			-webkit-transition: all .4s;
+		}
+		&.waiting .title{
+			background-size: 0 100%;
 		}
 		&.doing .title,
 		&.done .title{
-			.gradient(left,rgba(255,255,255,.5),rgba(255,255,255,.1));
+
 		}
 		//测试用
 		&.doing .title{
-			background-size: 30% 100%;
+			/*background-size: 30% 100%;*/
 		}
 	}
 }

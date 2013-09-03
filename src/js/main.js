@@ -48,7 +48,7 @@
 
 		// kapok.initConfig('../other/test/');
 		kapok.initConfig('/Users/TooBug/work/prowork/');
-		console.log(gruntBridge.config);
+		// console.log(gruntBridge.config);
 		kapok.initTask('pcall');
 
 	};
@@ -64,6 +64,26 @@ $(function(){
 
 	// 绑定开始编译按钮事件
 	ui.event.bindCompile(kapok.doCompile);
+
+
+	// 绑定gruntBridge事件
+	var $window = $(window);
+
+	$window.on('gruntBridge.jobProgress',function(e,progress){
+
+		progress.forEach(function(jobProgress){
+
+			ui.main.updateJobProgress(jobProgress.name,jobProgress);
+
+		});
+
+	});
+
+	$window.on('gruntBridge.jobStart',function(){
+
+		ui.main.clearAllJobProgress();
+
+	});
 
 	kapok.test();
 	

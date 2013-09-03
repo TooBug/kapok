@@ -4,9 +4,20 @@
 
 	ui.main = {};
 
-	ui.main.updateJobProgress = function($dom,progress){
+	ui.main.updateJobProgress = function(jobName,progressObj){
 
-		$dom.find('.title').css('background-size',progress + '% 100%');
+		$('#jobList li[data-jobname="' + jobName + '"]').removeClass('waiting doing done')
+			.addClass(progressObj.status === 'done'?'done':'waiting')
+			.find('.title')
+			.css('background-size',progressObj.progress + '% 100%');
+
+	};
+
+	ui.main.clearAllJobProgress = function(jobName,progressObj){
+
+		$('#jobList li').removeClass('doing done').addClass('waiting')
+			.find('.title')
+			.css('background-size','0 100%');
 
 	};
 
