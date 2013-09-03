@@ -34,9 +34,9 @@
 
 	};
 
-	ui.main.updateTaskName = function(taskName){
+	ui.main.updateProjectName = function(projectName,projectVersion){
 
-		$('#taskInfo .projectName').text(taskName);
+		$('#taskInfo .projectName').text(projectName + '(' + projectVersion + ')');
 
 	};
 

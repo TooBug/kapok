@@ -98,12 +98,17 @@
 	};
 
 	// 读取Gruntfile
-	gruntBridge.getConfig = function(fileName){
-		if(!fileName){
-			fileName = 'Gruntfile.js';
+	gruntBridge.getConfig = function(gruntFileName,packageName){
+		if(!gruntFileName){
+			gruntFileName = 'Gruntfile.js';
 		}
-		var gruntFunc = require(path.join(gruntBridge.basePath + fileName));
+		if(!packageName){
+			packageName = 'package.json';
+		}
+		var gruntFunc = require(path.join(gruntBridge.basePath + gruntFileName));
 		gruntFunc(grunt);
+
+		gruntBridge.config.package = helper.readJSON(packageName);
 	};
 
 	// 运行Grunt的指定任务

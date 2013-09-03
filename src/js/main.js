@@ -6,6 +6,7 @@
 
 		gruntBridge.basePath = gruntPath;
 		gruntBridge.getConfig();
+		ui.main.updateProjectName(gruntBridge.config.package.name,gruntBridge.config.package.version);
 		
 	};
 
@@ -22,7 +23,6 @@
 		}
 
 		targetTask = targetTaskList[0];
-		ui.main.updateTaskName(targetTask.name);
 		ui.main.updateTaskList(gruntBridge.config.buildTaskList,targetTask.name);
 		ui.main.fillJobList(targetTask.jobList);
 
