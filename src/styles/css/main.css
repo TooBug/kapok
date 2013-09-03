@@ -9,6 +9,16 @@ body {
   font-family: helveticaneue-light, helvetia neue light, helvetia neue, hiragino sans gb, microsoft yahei, serif;
   color: #ffffff;
 }
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(224, 224, 224, 0.8);
+  border-radius: 5px;
+}
 input,
 textarea {
   -webkit-user-select: text;
@@ -105,11 +115,11 @@ body {
   background: url("../../images/icons.png");
 }
 #jobList li.done .icon {
-  background-position: 4px -25px;
+  background-position: 6px -23px;
 }
 #jobList li.doing .icon,
 #jobList li.waiting .icon {
-  background-position: -26px -25px;
+  background-position: -24px -23px;
 }
 #jobList li .title {
   display: inline-block;
@@ -118,17 +128,10 @@ body {
   background-repeat: no-repeat;
   background-image: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
   -webkit-transition: all .4s;
-}
-#jobList li.waiting .title {
   background-size: 0 100%;
 }
-#jobList li.doing .title {
-  /*background-size: 30% 100%;*/
-
-}
 #operate {
-  /*padding-top: 40px;*/
-
+  padding-top: 20px;
   padding-right: 30px;
   text-align: right;
 }

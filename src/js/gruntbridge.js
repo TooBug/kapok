@@ -144,6 +144,9 @@
 
 	function readJobs(jobObj){
 
+		gruntBridge.config.jobs = jobObj;
+		console.log(jobObj);
+
 	};
 
 	function readPlugins(pluginTaskName){
