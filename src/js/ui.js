@@ -81,6 +81,31 @@
 	window.ui = ui;
 
 
+	// 基本UI功能
+	$(function(){
+
+		var gui = require('nw.gui');
+		var nativeWindow = gui.Window.get();
+
+		$('header').on('click','.close_btn,.max_btn,.min_btn',function(){
+
+			var $this = $(this);
+
+			if($this.hasClass('close_btn')){
+
+				if(confirm('确认要关闭kapok么？')){
+					gui.App.quit();
+				}
+
+			}else if($this.hasClass('min_btn')){
+				nativeWindow.minimize();
+			}
+
+		});
+
+	});
+
+
 
 }(window,jQuery);
 

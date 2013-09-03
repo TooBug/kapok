@@ -41,7 +41,7 @@
 				jobProgress.push({
 					name:newJobMatch[1],
 					status:'doing',
-					progress:70
+					progress:10
 				});
 
 			}else{
