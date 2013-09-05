@@ -114,6 +114,10 @@ body {
   height: 22px;
   background: url("../../images/icons.png");
 }
+#jobList li:hover {
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
 #jobList li.done .icon {
   background-position: 6px -23px;
 }

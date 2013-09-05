@@ -1,9 +1,12 @@
 ~function(window,$){
 
+	var path = require('path');
+
 	var ui = {};
 
 	ui.main = {};
 
+	/* 主页页UI操作 */
 	ui.main.updateJobProgress = function(jobName,progressObj){
 
 		$('#jobList li[data-jobname="' + jobName + '"]').removeClass('waiting doing done')
@@ -50,6 +53,28 @@
 		if(currTaskName){
 			$targetSelect.val(currTaskName);
 		}
+
+	};
+
+	/* Job设置页UI操作 */
+
+	ui.jobSettings = {};
+
+	ui.jobSettings.fillFileList = function(fileList){
+
+
+		var jobHtml = '';
+
+		fileList.forEach(function(fileItem){
+
+			jobHtml += MicroTmpl(document.querySelector('#tmpl_fileListItem').innerHTML,{
+				// filePath:path.relative(basePath,fileItem)
+				filePath:fileItem
+			});
+
+		});
+
+		$('#sourceFileList').empty().append(jobHtml);
 
 	};
 
@@ -100,6 +125,41 @@
 			}else if($this.hasClass('min_btn')){
 				nativeWindow.minimize();
 			}
+
+		});
+
+
+		$('#jobList').on('click','li',function(){
+
+			var $this = $(this);
+			var targetJobName = $this.data('jobname');
+			var targetJobNameArr = targetJobName.split(':');
+			var jobInfo;
+
+			var jobSettingsWindow = gui.Window.get(window.open('./jobsettings.html'));
+			// jobSettingsWindow.resizeTo(400,300);
+
+			for(var jobGroup in gruntBridge.config.jobs){
+
+				if(jobGroup === targetJobNameArr[0]){
+
+					for(var jobName in gruntBridge.config.jobs[jobGroup]){
+
+						if(jobName === targetJobNameArr[1]){
+
+							jobInfo = gruntBridge.config.jobs[jobGroup][jobName];
+
+						}
+
+					}
+
+				}
+
+			}
+
+			jobSettingsWindow.window.basePath = gruntBridge.basePath;
+			jobSettingsWindow.window.jobInfo = jobInfo;
+			
 
 		});
 
