@@ -16,6 +16,9 @@
 		<ul id="sourceFileList">
 			
 		</ul>
+		<ul id="distFileList">
+			
+		</ul>
 	</section>
 		
 	</section>
@@ -26,7 +29,14 @@
 	<script src="./js/gruntbridge.js"></script>
 	<script src="./js/jobsettings.js"></script>
 
-	<template id="tmpl_fileListItem">
+	<template id="tmpl_sourceFileListItem">
+		<li data-filepath="{%filePath%}">
+			<span class="icon">&nbsp;</span>
+			<span class="title">{%filePath%}</span>
+		</li>
+	</template>
+
+	<template id="tmpl_distFileListItem">
 		<li data-filepath="{%filePath%}">
 			<span class="icon">&nbsp;</span>
 			<span class="title">{%filePath%}</span>

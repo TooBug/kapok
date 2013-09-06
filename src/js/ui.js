@@ -60,14 +60,14 @@
 
 	ui.jobSettings = {};
 
-	ui.jobSettings.fillFileList = function(fileList){
+	ui.jobSettings.fillSourceFileList = function(fileList){
 
 
 		var jobHtml = '';
 
 		fileList.forEach(function(fileItem){
 
-			jobHtml += MicroTmpl(document.querySelector('#tmpl_fileListItem').innerHTML,{
+			jobHtml += MicroTmpl(document.querySelector('#tmpl_sourceFileListItem').innerHTML,{
 				// filePath:path.relative(basePath,fileItem)
 				filePath:fileItem
 			});
@@ -75,6 +75,24 @@
 		});
 
 		$('#sourceFileList').empty().append(jobHtml);
+
+	};
+
+	ui.jobSettings.fillDistFileList = function(fileList){
+
+
+		var jobHtml = '';
+
+		fileList.forEach(function(fileItem){
+
+			jobHtml += MicroTmpl(document.querySelector('#tmpl_distFileListItem').innerHTML,{
+				// filePath:path.relative(basePath,fileItem)
+				filePath:fileItem
+			});
+
+		});
+
+		$('#distFileList').empty().append(jobHtml);
 
 	};
 
@@ -159,6 +177,7 @@
 
 			jobSettingsWindow.window.basePath = gruntBridge.basePath;
 			jobSettingsWindow.window.jobInfo = jobInfo;
+			jobSettingsWindow.window.jobNameArr = targetJobNameArr;
 			
 
 		});
