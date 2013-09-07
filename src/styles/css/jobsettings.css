@@ -1,0 +1,79 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  -webkit-user-select: none;
+  height: 100%;
+  font-family: helveticaneue-light, helvetia neue light, helvetia neue, hiragino sans gb, microsoft yahei, serif;
+  color: #ffffff;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(224, 224, 224, 0.8);
+  border-radius: 5px;
+}
+input,
+textarea {
+  -webkit-user-select: text;
+}
+header {
+  padding: 0 30px;
+  height: 30px;
+  line-height: 30px;
+  -webkit-app-region: drag;
+  background: url(../../images/logo_32.png) 2px 2px no-repeat;
+  background-size: 24px 24px;
+}
+header a {
+  margin-top: 5px;
+  display: block;
+  float: right;
+  width: 20px;
+  height: 20px;
+  background: url(../../images/icons.png) no-repeat;
+  opacity: .8;
+}
+header a:hover {
+  opacity: 1;
+}
+header a.min_btn {
+  background-position: 0 0;
+}
+header a.max_btn {
+  background-position: -30px 0;
+}
+header a.close_btn {
+  background-position: -60px 0;
+}
+body {
+  background-image: -webkit-linear-gradient(top, #ff8989, #f83b42);
+}
+#jobInfo {
+  /*margin:20px;*/
+
+  display: -webkit-flex;
+}
+#jobInfo ul {
+  -webkit-flex: 1;
+  list-style: none;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid white;
+  height: 300px;
+  overflow: auto;
+}
+#jobInfo ul li {
+  line-height: 24px;
+}
+#jobInfo ul li:hover,
+#jobInfo ul li.hover {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.1);
+}

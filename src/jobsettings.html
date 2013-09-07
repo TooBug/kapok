@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8" />
 	<title>kapok 0.0.1 - 设置</title>
-	<link rel="stylesheet" href="./styles/css/main.css" />
+	<link rel="stylesheet" href="./styles/css/jobsettings.css" />
 </head>
 <body>
 	<header>
@@ -12,13 +12,14 @@
 		<!-- <a class="max_btn" href="#"></a> -->
 		<!-- <a class="min_btn" href="#"></a> -->
 	</header>
-	<section id="taskInfo">
+	<section id="jobInfo">
 		<ul id="sourceFileList">
 			
 		</ul>
 		<ul id="distFileList">
 			
 		</ul>
+
 	</section>
 		
 	</section>
@@ -32,14 +33,14 @@
 	<template id="tmpl_sourceFileListItem">
 		<li data-filepath="{%filePath%}">
 			<span class="icon">&nbsp;</span>
-			<span class="title">{%filePath%}</span>
+			<span class="title" title="{%filePath%}">{%filePath%}</span>
 		</li>
 	</template>
 
 	<template id="tmpl_distFileListItem">
 		<li data-filepath="{%filePath%}">
 			<span class="icon">&nbsp;</span>
-			<span class="title">{%filePath%}</span>
+			<span class="title" title="{%filePath%}">{%filePath%}</span>
 		</li>
 	</template>
 

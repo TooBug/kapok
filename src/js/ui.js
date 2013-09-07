@@ -182,6 +182,43 @@
 
 		});
 
+
+		// 设置页同步滚动
+		$('#sourceFileList,#distFileList').on('scroll',function(e){
+
+			var $this = $(this),
+				$that = $('#sourceFileList,#distFileList').not($this);
+
+			var thisHeight = $this.height(),
+				thisWidth = $this.width(),
+				thatHeight = $that.height(),
+				thatWidth = $that.width();
+
+			var heightPercent = $this.get(0).scrollTop / thisHeight,
+				widthPercent = $this.get(0).scrollLeft /thisWidth;
+
+			/*$that.get(0).scrollTop = heightPercent * thatHeight;
+			$that.get(0).scrollLeft = widthPercent * thatWidth;*/
+			$that.get(0).scrollTop = $this.get(0).scrollTop;
+			$that.get(0).scrollLeft = $this.get(0).scrollLeft;
+
+		});
+
+		// 设置页同步hover
+		$('#sourceFileList,#distFileList').on('mouseenter','li',function(e){
+
+			var $this = $(this),
+				$thisUl = $this.parent(),
+				index = $thisUl.find('li').index($this),
+				$that = $('#sourceFileList,#distFileList').not($thisUl).find('li:eq('+index+')');
+
+			$('#sourceFileList li,#distFileList li').removeClass('hover');
+
+			$that.addClass('hover');
+
+		});
+
+
 	});
 
 
