@@ -71,6 +71,8 @@ body {
 }
 #jobInfo ul li {
   line-height: 24px;
+  white-space: nowrap;
+  overflow-x: hidden;
 }
 #jobInfo ul li:hover,
 #jobInfo ul li.hover {
