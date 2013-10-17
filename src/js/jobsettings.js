@@ -15,11 +15,13 @@
 
 			jobSettings.config.sourceFileList = jobInfo;
 			jobSettings.config.distFileList = [];
+			jobSettings.config.sourceFileType = 'array';
 			jobSettings.config.hasOutput = false;
 
 		}else if(jobInfo.src && Array.isArray(jobInfo.src)){
 			// 非数组，有src为数组的插件，适用于htmlhint/csshint/replace
 			jobSettings.config.sourceFileList = jobInfo.src;
+			jobSettings.config.sourceFileType = 'srcArray';
 			
 			// replace插件的覆盖当前文件选项
 			if(jobInfo.overwrite){
@@ -57,6 +59,9 @@
 
 					if(!Array.isArray(tmpArr)){
 						tmpArr = [tmpArr];
+						jobSettings.config.sourceFileType = 'fileMap';
+					}else{
+						jobSettings.config.sourceFileType = 'arrayMap';
 					}
 
 					tmpArr.forEach(function(tmpItem){
@@ -72,6 +77,7 @@
 			jobSettings.config.distFileList = tmpDistFileList;
 
 		}else if(jobInfo.files && Array.isArray(jobInfo.files)){
+			jobSettings.config.sourceFileType = 'fileGroup';
 			// files为数组，一般为多组文件进行操作，可各自设置参数
 			// 适用于copy
 			jobInfo.files.forEach(function(fileGroup){
