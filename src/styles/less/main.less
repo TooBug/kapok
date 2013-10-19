@@ -1,18 +1,38 @@
 @import "base.less";
 
 body{
-	.gradient(@bg_light,@bg_dark);
+	background: @body_bg;
+}
+
+#landing_container{
+	button{
+		.btn();
+		width:180px;
+		height:60px;
+		overflow: hidden;
+		position: absolute;
+		left:50%;
+		top:50%;
+		-webkit-transform:translate(-50%,-50%);
+		margin-top:20px;
+		font-size:24px;
+		input[type=file]{
+			position: absolute;
+			-webkit-transform: scale(4);
+			opacity: 0;
+			cursor: pointer;
+			&:disabled{
+				cursor: default;
+			}
+		}
+	}
 }
 
 #taskInfo{
+	display: none;
 	margin:20px 30px 10px 30px;
 	padding:15px 0 5px 0;
 	border-bottom:1px solid white;
-	.projectName{
-		float: left;
-		font-size: 24px;
-		vertical-align: bottom;
-	}
 	.taskList{
 		float:right;
 		position: relative;
@@ -48,23 +68,25 @@ body{
 }
 
 .offsetIcon(@x,@y){
-	background-position: @x + 6px @y + 7px;
+	background-position: @x + 2px @y + 3px;
 }
 
 #jobList{
-	margin:0 30px;
-	height:250px;
+	margin:45px 40px 10px 40px;
+	height:220px;
 	overflow: auto;
 	list-style: none;
+	color:#000;
 	li{
-		margin-bottom: 10px;
-		height:32px;
-		line-height: 32px;
-		font-size: 18px;
+		margin-bottom: 5px;
+		height:28px;
+		line-height: 28px;
+		font-size: 20px;
 		.icon{
 			display: inline-block;
-			width:22px;
-			height:22px;
+			width:20px;
+			height:25px;
+			vertical-align: -3px;
 			background:url("@{bgUrlBase}icons.png");
 		}
 		&:hover{
@@ -72,19 +94,24 @@ body{
 			cursor: pointer;
 		}
 		&.done .icon{
-			.offsetIcon(0,-30px);
+			.offsetIcon(-60px,-60px);
 		}
-		&.doing .icon,
+		&.error .icon{
+			.offsetIcon(-90px,-60px);
+		}
+		&.doing .icon{
+			.offsetIcon(-30px,-60px);
+		}
 		&.waiting .icon{
-			.offsetIcon(-30px,-30px);
+			.offsetIcon(0,-60px);
 		}
 
 		.title{
 			display: inline-block;
-			width: ~"-webkit-calc(100% - 60px)";
-			padding-left: 1em;
+			width: ~"-webkit-calc(100% - 40px)";
+			padding-left: .5em;
 			background-repeat: no-repeat;
-			.gradient(left,rgba(255,255,255,.5),rgba(255,255,255,.1));
+			.gradient(left,rgb(252,235,188),rgb(252,235,188));
 			-webkit-transition: all .4s;
 			background-size: 0 100%;
 		}
@@ -93,9 +120,17 @@ body{
 
 #operate{
 	padding-top: 20px;
-	padding-right: 30px;
+	padding-right: 40px;
 	text-align: right;
-	button[type=submit]{
+	button{
 		.btn();
+		margin-left: 10px;
+		width:125px;
+		height:40px;
+		span.icon{
+			width:20px;
+			height:20px;
+			vertical-align: -3px;
+		}
 	}
 }

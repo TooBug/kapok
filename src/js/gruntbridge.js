@@ -119,7 +119,7 @@
 		$(window).trigger('gruntBridge.jobStart');
 
 		var spawn = require('child_process').spawn,
-		    grunt  = spawn('grunt',[taskName],{
+		    grunt = spawn('grunt',[taskName],{
 		    	cwd:gruntBridge.basePath
 		    });
 
