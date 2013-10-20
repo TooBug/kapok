@@ -7,7 +7,7 @@ body {
   -webkit-user-select: none;
   height: 100%;
   font-family: helveticaneue-light, helvetia neue light, helvetia neue, hiragino sans gb, microsoft yahei, serif;
-  color: #ffffff;
+  color: #fef2f0;
 }
 ::-webkit-scrollbar {
   width: 8px;
@@ -24,20 +24,22 @@ textarea {
   -webkit-user-select: text;
 }
 header {
-  padding: 0 30px;
-  height: 30px;
-  line-height: 30px;
+  padding: 0 10px 0 30px;
+  height: 80px;
+  line-height: 75px;
   -webkit-app-region: drag;
-  background: url(../../images/logo_32.png) 2px 2px no-repeat;
-  background-size: 24px 24px;
+  background: #b14d3c;
+  color: #fef2f0;
+  font-size: 48px;
+  font-family: HelveticaNeue-Thin;
 }
 header a {
-  margin-top: 5px;
+  margin-top: 15px;
   display: block;
   float: right;
   width: 20px;
   height: 20px;
-  background: url(../../images/icons.png) no-repeat;
+  background: url("../../images/icons.png") no-repeat;
   opacity: .8;
 }
 header a:hover {
@@ -50,7 +52,138 @@ header a.max_btn {
   background-position: -30px 0;
 }
 header a.close_btn {
-  background-position: -60px 0;
+  background-position: 0 0;
+}
+span.icon {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background: url("../../images/icons.png") no-repeat;
+}
+span.icon.icon_folder {
+  background-position: 0 -24px;
+}
+span.icon.icon_tool {
+  background-position: -30px -30px;
+}
+span.icon.icon_list {
+  background-position: -60px -30px;
+}
+/*详情页*/
+.dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  /*width: 450px;*/
+
+  /*height: 230px;*/
+
+  background: #FFF;
+  border: 5px solid #C1C4C6;
+  z-index: 9999;
+}
+.dialog .close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 25px;
+  height: 25px;
+  border: 0 none;
+  overflow: hidden;
+  text-indent: -100em;
+  background: url("../../images/icons.png");
+  opacity: .8;
+  /*background-image: -webkit-image-set(url(../images/delete.png) 1x, url(../images/delete_2x.png) 2x);*/
+
+  cursor: pointer;
+}
+.dialog .close:hover {
+  opacity: 1;
+  /*background-image: -webkit-image-set(url(../images/delete_hover.png) 1x, url(../images/delete_hover_2x.png) 2x);*/
+
+}
+.dialog .bd {
+  /*min-height: 90px;*/
+
+  padding: 30px;
+  /*text-align: center;*/
+
+  line-height: 30px;
+  background: #fff;
+  font-size: 16px;
+  color: #333;
+}
+.dialog .ctrl {
+  height: 50px;
+  padding: 10px 0;
+  background: #fef2f0;
+  text-align: center;
+}
+.dialog .ctrl .dialog_cancel_btn {
+  background: #b14d3c;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #8b3c2f, inset 0 0 0 1px #c76959;
+  color: #fef2f0;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 0;
+  width: 60px;
+  height: 40px;
+  background: transparent;
+  color: #b14d3c;
+  border: 0 none;
+  box-shadow: none;
+}
+.dialog .ctrl .dialog_cancel_btn:hover {
+  background: #c05846;
+}
+.dialog .ctrl .dialog_cancel_btn:disabled {
+  cursor: default;
+  background: #777777;
+  box-shadow: 0 0 0 1px #5d5d5d, inset 0 0 0 1px #909090;
+}
+.dialog .ctrl .dialog_cancel_btn.secondary_btn {
+  color: #b14d3c;
+  background: #feeeeb;
+  box-shadow: 0 0 0 1px #fbc9c0;
+}
+.dialog .ctrl .dialog_cancel_btn.secondary_btn:hover {
+  background: #fef6f5;
+}
+.dialog .ctrl .dialog_cancel_btn:hover {
+  background: transparent;
+  color: #c76959;
+  border: 0 none;
+  box-shadow: none;
+}
+.dialog .ctrl .dialog_ok_btn {
+  background: #b14d3c;
+  border: 0 none;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #8b3c2f, inset 0 0 0 1px #c76959;
+  color: #fef2f0;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 0;
+  width: 90px;
+  height: 40px;
+}
+.dialog .ctrl .dialog_ok_btn:hover {
+  background: #c05846;
+}
+.dialog .ctrl .dialog_ok_btn:disabled {
+  cursor: default;
+  background: #777777;
+  box-shadow: 0 0 0 1px #5d5d5d, inset 0 0 0 1px #909090;
+}
+.dialog .ctrl .dialog_ok_btn.secondary_btn {
+  color: #b14d3c;
+  background: #feeeeb;
+  box-shadow: 0 0 0 1px #fbc9c0;
+}
+.dialog .ctrl .dialog_ok_btn.secondary_btn:hover {
+  background: #fef6f5;
 }
 body {
   background-image: -webkit-linear-gradient(top, #ff8989, #f83b42);

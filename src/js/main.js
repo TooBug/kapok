@@ -12,18 +12,22 @@
 
 	kapok.initTask = function(taskName){
 
-		var targetTaskList = gruntBridge.config.buildTaskList.filter(function(buildTask){
-			return buildTask.name === taskName;
-		});
+		var targetTaskList;
 
-		var targetTask;
+		if(taskName){		
+			targetTaskList = gruntBridge.config.buildTaskList.filter(function(buildTask){
+				return buildTask.name === taskName;
+			});
+		}else{
+			targetTaskList = gruntBridge.config.buildTaskList.slice(0,1);
+		}
 
 		if(!targetTaskList || !targetTaskList.length){
 			return false;
 		}
 
-		targetTask = targetTaskList[0];
-		ui.main.updateTaskList(gruntBridge.config.buildTaskList,targetTask.name);
+		var targetTask = targetTaskList[0];
+		// ui.main.updateTaskList(gruntBridge.config.buildTaskList,targetTask.name);
 		ui.main.fillJobList(targetTask.jobList);
 
 	};
@@ -44,12 +48,13 @@
 
 	};
 
-	kapok.test = function(){
+	kapok.init = function(){
 
 		// kapok.initConfig('../other/test/');
-		kapok.initConfig('/Users/TooBug/work/prowork/');
+		// kapok.initConfig('/Users/TooBug/work/prowork/');
+		kapok.initConfig(localStorage.getItem('basePath'));
 		// console.log(gruntBridge.config);
-		kapok.initTask('pcall');
+		kapok.initTask();
 
 	};
 
@@ -65,7 +70,6 @@ $(function(){
 	// 绑定开始编译按钮事件
 	ui.event.bindCompile(kapok.doCompile);
 
-
 	// 绑定gruntBridge事件
 	var $window = $(window);
 
@@ -79,12 +83,22 @@ $(function(){
 
 	});
 
+	$window.on('gruntBridge.exit',function(){
+		showDialog({
+			content:'构建完成！',
+			canCancel:false
+		}).done(function($dialog){
+			ui.main.enableCompileBtn()
+			$dialog.remove();
+		});
+	});
+
 	$window.on('gruntBridge.jobStart',function(){
 
 		ui.main.clearAllJobProgress();
 
 	});
 
-	kapok.test();
+	kapok.init();
 	
 });

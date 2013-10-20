@@ -3,12 +3,22 @@
 	padding: 0;
 }
 
-@titleHeight:30px;
-@titlePadding:30px;
+@titleHeight:80px;
+@titlePaddingLeft:30px;
+@titlePaddingRight:10px;
+
+@body_bg:#FEF2F0;
+@title_bg:#B14D3C;
+@title_text_color:#FEF2F0;
 
 @bg_light:#FF8989;
 @bg_dark:#F83B42;
-@text_color:white;
+
+@btn_bg:#B14D3C;
+
+
+@text_light_color:#FEF2F0;
+@text_dark_color:#B14D3C;
 
 @bgUrlBase:'../../images/';
 
@@ -24,29 +34,42 @@
 
 }
 
-.btn(@top:#FFACAC,@bottom:#FFA0A8){
-	padding:8px 20px;
-	font-size: 18px;
-	color:white;
-	text-shadow:1px 1px rgba(0,0,0,.3);
-	border-radius: 3px;
+.btn(@font-size:18px){
+	background:@btn_bg;
 	border:0 none;
-	box-shadow: 0 0 4px rgba(0,0,0,.5),
-		inset 1px 0 1px #FFB7BF,
-		inset -1px 0 1px #FE7676;
+	border-radius: 2px;
+	box-shadow: 0 0 0 1px darken(@btn_bg,10%),
+		inset 0 0 0 1px lighten(@btn_bg,10%);
+	color:@text_light_color;
 	cursor:pointer;
-	.gradient(@top,@bottom);
+	font-size:@font-size;
 
 	&:hover{
-		.gradient(lighten(@top,2%),lighten(@bottom,2%));
+		background:lighten(@btn_bg,5%);
 	}
+	&:disabled{
+		cursor: default;
+		background: greyscale(@btn_bg);
+		box-shadow: 0 0 0 1px greyscale(darken(@btn_bg,10%)),
+			inset 0 0 0 1px greyscale(lighten(@btn_bg,10%));
+	}
+
+	&.secondary_btn{
+		color:@text_dark_color;
+		background: darken(@body_bg,1%);
+		box-shadow: 0 0 0 1px darken(@body_bg,10%);
+		&:hover{
+			background:lighten(@body_bg,1%);
+		}
+	}
+
 }
 
 html,body{
 	-webkit-user-select:none;
 	height:100%;
 	font-family: helveticaneue-light,helvetia neue light,helvetia neue,hiragino sans gb,microsoft yahei,serif;
-	color:@text_color;
+	color:@text_light_color;
 }
 
 ::-webkit-scrollbar {
@@ -67,19 +90,21 @@ input,textarea{
 }
 
 header{
-	padding:0 @titlePadding;
+	padding:0 @titlePaddingRight 0 @titlePaddingLeft;
 	height:@titleHeight;
-	line-height: @titleHeight;
+	line-height: @titleHeight - 5px;
 	-webkit-app-region:drag;
-	background: url(../../images/logo_32.png) 2px 2px no-repeat;
-	background-size: 24px 24px;
+	background: @title_bg;
+	color:@title_text_color;
+	font-size:48px;
+	font-family: HelveticaNeue-Thin;
 	a{
-		margin-top: 5px;
+		margin-top: 15px;
 		display: block;
 		float: right;
 		width:20px;
 		height:20px;
-		background: url(../../images/icons.png) no-repeat;
+		background: url("@{bgUrlBase}icons.png") no-repeat;
 		opacity: .8;
 		&:hover{
 			opacity:1;
@@ -91,9 +116,95 @@ header{
 			background-position: -30px 0;
 		}
 		&.close_btn{
-			background-position: -60px 0;
+			background-position: 0 0;
 		}
 	}
 }
 
+span.icon{
+	display: inline-block;
+	width:25px;
+	height:25px;
+	background: url("@{bgUrlBase}icons.png") no-repeat;
+}
 
+span.icon.icon_folder{
+	background-position: 0 -24px;
+}
+
+span.icon.icon_tool{
+	background-position: -30px -30px;
+}
+
+span.icon.icon_list{
+	background-position: -60px -30px;
+}
+
+
+/*详情页*/
+.dialog {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	-webkit-transform:translate(-50%,-50%);
+	/*width: 450px;*/
+	/*height: 230px;*/
+	background: #FFF;
+	border: 5px solid #C1C4C6;
+	z-index: 9999;
+}
+.dialog .close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 25px;
+	height: 25px;
+	border: 0 none;
+	overflow: hidden;
+	text-indent: -100em;
+	background: url("@{bgUrlBase}icons.png");
+	opacity: .8;
+	/*background-image: -webkit-image-set(url(../images/delete.png) 1x, url(../images/delete_2x.png) 2x);*/
+	cursor: pointer;
+}
+.dialog .close:hover {
+	opacity: 1;
+	/*background-image: -webkit-image-set(url(../images/delete_hover.png) 1x, url(../images/delete_hover_2x.png) 2x);*/
+}
+.dialog .bd {
+	/*min-height: 90px;*/
+	padding: 30px;
+	/*text-align: center;*/
+	line-height: 30px;
+	background: #fff;
+	font-size: 16px;
+	color: #333;
+}
+.dialog .ctrl {
+	height: 50px;
+	padding: 10px 0;
+	background: @body_bg;
+	text-align: center;
+}
+.dialog .ctrl .dialog_cancel_btn{
+	.btn();
+	margin:5px 0;
+	width:60px;
+	height:40px;
+	background: transparent;
+	color:@text_dark_color;
+	border:0 none;
+	box-shadow: none;
+	&:hover{
+		background: transparent;
+		color:lighten(@text_dark_color,10%);
+		border:0 none;
+		box-shadow: none;		
+	}
+}
+.dialog .ctrl .dialog_ok_btn {
+	.btn();
+	margin:5px 0;
+	width:90px;
+	height:40px;
+}

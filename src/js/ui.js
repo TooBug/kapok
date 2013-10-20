@@ -1,6 +1,8 @@
 ~function(window,$){
 
-	var path = require('path');
+	'use strict';
+
+	// var path = require('path');
 
 	var ui = {};
 
@@ -39,20 +41,25 @@
 
 	ui.main.updateProjectName = function(projectName,projectVersion){
 
-		$('#taskInfo .projectName').text(projectName + '(' + projectVersion + ')');
+		$('header span').text(projectName + '(' + projectVersion + ')');
 
 	};
 
-	ui.main.updateTaskList = function(taskList,currTaskName){
+	ui.main.updateTaskList = function($container,taskList,currTaskName){
 
-		var jobHtml = MicroTmpl('<option value="{%name%}">{%name%}</option>',taskList);
-		var $targetSelect = $('#taskInfo select');
+		var taskHtml = MicroTmpl('<p><label><input type="radio" value="{%name%}" name="targetTask" /> {%name%}</label></p>',taskList);
 
-		$targetSelect.empty().append(jobHtml);
+		$container.empty().append(taskHtml);
 
 		if(currTaskName){
-			$targetSelect.val(currTaskName);
+			$container.find('[value='+currTaskName+']').prop('checked',true);
 		}
+
+	};
+
+	ui.main.enableCompileBtn = function(){
+
+		$('#operate button[type=submit]').prop('disabled',false);
 
 	};
 
@@ -102,9 +109,25 @@
 
 	ui.event.bindTaskSwitch = function(callback){
 
-		$('#taskInfo select').change(function(){
+		$('#operate button[type=button]').click(function(){
 
-			callback($(this).val());
+			showDialog({
+
+				content:'',
+				onShow:function($dialog){
+					ui.main.updateTaskList($dialog.find('.bd'),gruntBridge.config.buildTaskList);
+				}
+
+			}).done(function($dialog){
+
+				ui.currTaskName = $dialog.find('input[name="targetTask"]:checked').val();
+				callback(ui.currTaskName);
+				$dialog.remove();
+
+			}).fail(function($dialog){
+				$dialog.remove();
+			});
+
 
 		});
 
@@ -114,7 +137,8 @@
 
 		$('#operate button[type=submit]').click(function(){
 
-			callback($('#taskInfo select').val());
+			$(this).prop('disabled',true);
+			callback(ui.currTaskName);
 
 		});
 
@@ -136,9 +160,13 @@
 
 			if($this.hasClass('close_btn')){
 
-				if(confirm('确认要关闭kapok么？')){
+				showDialog({
+					content:'确认要关闭kapok么？'
+				}).done(function($dialog){
 					gui.App.quit();
-				}
+				}).fail(function($dialog){
+					$dialog.remove();
+				})
 
 			}else if($this.hasClass('min_btn')){
 				nativeWindow.minimize();

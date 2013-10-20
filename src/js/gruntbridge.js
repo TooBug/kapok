@@ -119,24 +119,28 @@
 		$(window).trigger('gruntBridge.jobStart');
 
 		var spawn = require('child_process').spawn,
-		    grunt  = spawn('grunt',[taskName],{
-		    	cwd:gruntBridge.basePath
-		    });
+			grunt;
+
+		// grunt = spawn('which',['node','grunt']);
+		grunt = spawn('/usr/local/bin/node',['/usr/local/bin/grunt',taskName],{
+			cwd:gruntBridge.basePath
+		});
 
 		// 捕获标准输出
 		grunt.stdout.on('data', function(output){
+			console.log(output+'');
 			helper.parseOutput(output,jobProgress);
 			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
 		});
 
 		// 捕获标准错误输出并将其打印到控制台
 		grunt.stderr.on('data', function (data) {
-		    console.log('标准错误输出：\n' + data);
+			console.log('标准错误输出：\n' + data);
 		});
 
 		// 注册子进程关闭事件
 		grunt.on('exit', function (code, signal) {
-		    helper.parseExit(code,jobProgress);
+			helper.parseExit(code,jobProgress);
 			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
 			$(window).trigger('gruntBridge.exit');
 		});
