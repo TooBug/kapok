@@ -160,9 +160,13 @@
 
 			if($this.hasClass('close_btn')){
 
-				if(confirm('确认要关闭kapok么？')){
+				showDialog({
+					content:'确认要关闭kapok么？'
+				}).done(function($dialog){
 					gui.App.quit();
-				}
+				}).fail(function($dialog){
+					$dialog.remove();
+				})
 
 			}else if($this.hasClass('min_btn')){
 				nativeWindow.minimize();
