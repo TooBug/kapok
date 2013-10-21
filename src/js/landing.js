@@ -8,8 +8,6 @@ $('#projectFolder').change(function(e){
 
 	var $this = $(this);
 
-	var startTime = Date.now();
-
 	var files = e.originalEvent.target.files;
 	var folderRegExp = /^([^\/]+)\//;
 	var folderPath;
@@ -44,6 +42,8 @@ $('#projectFolder').change(function(e){
 		var careExtList = ['js','css','png'];
 		var excludeFileRegexp = /(?:\.svn|\.git|\.kapok|\.gitignore|\.DS_Store|\.localized|node_modules|thumbs\.db$|\.$|\.min\.js|\.min\.css)/;
 		var extRegexp = /\.([^\.]+)$/;
+
+
 
 		Array.prototype.forEach.call(files,function(file){
 
@@ -99,7 +99,7 @@ $('#projectFolder').change(function(e){
 
 		// console.log(fileList);
 
-	},10000);
+	},0);
 
 
 });
