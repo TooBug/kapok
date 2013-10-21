@@ -8,7 +8,7 @@
 
 	ui.main = {};
 
-	/* 主页页UI操作 */
+	/* 主页面UI操作 */
 	ui.main.updateJobProgress = function(jobName,progressObj){
 
 		$('#jobList li[data-jobname="' + jobName + '"]').removeClass('waiting doing done')
@@ -174,8 +174,8 @@
 
 		});
 
-
-		$('#jobList').on('click','li',function(){
+		// 编辑具体的编译Job
+		/*$('#jobList').on('click','li',function(){
 
 			var $this = $(this);
 			var targetJobName = $this.data('jobname');
@@ -208,7 +208,7 @@
 			jobSettingsWindow.window.jobNameArr = targetJobNameArr;
 			
 
-		});
+		});*/
 
 
 		// 设置页同步滚动

@@ -290,7 +290,8 @@ body {
 }
 #jobList li:hover {
   background: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
+  /*cursor: pointer;*/
+
 }
 #jobList li.done .icon {
   background-position: -58px -57px;
