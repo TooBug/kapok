@@ -79,14 +79,16 @@ $('#projectFolder').change(function(e){
 
 		});
 
+		localStorage.setItem('basePath',folderPath + '/');
+
 		if(hasPackageJson && hasGruntFile){
-			localStorage.setItem('basePath',folderPath + '/');
 			location.href = './main.html';
 		}else{
 			showDialog({
-				content:'项目目录未找到Grunt构建文件，无法继续。扫描生成构建方案的功能正在开发，敬请期待……',
-				canCancel:false
+				content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
 			}).done(function($dialog){
+				location.href = './taskmarket.html';
+			}).fail(function($dialog){
 				$dialog.remove();
 				$this.prop('disabled',false)
 						.closest('button').prop('disabled',false);

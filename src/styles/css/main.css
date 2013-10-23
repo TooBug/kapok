@@ -351,6 +351,9 @@ body {
 #taskmarket_container li.selected p {
   color: #b14d3c;
 }
+#taskmarket_container li:active .task_icon {
+  box-shadow: 0 0 15px #b14d3c;
+}
 #operate {
   padding-top: 20px;
   padding-right: 40px;
