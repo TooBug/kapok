@@ -118,6 +118,46 @@ body{
 	}
 }
 
+#taskmarket_container{
+	ul{
+		margin:45px 40px 10px 40px;
+		height:220px;
+
+	}
+	li{
+		display: inline-block;
+		width:120px;
+		cursor:pointer;
+		.task_icon{
+			-webkit-transition:all .3s;
+			margin:0 auto;
+			width:70px;
+			height:70px;
+			border-radius:70px;
+			box-shadow: 0 0 2px #bbb;
+			background:url("@{bgUrlBase}taskicons.png") -3px 0,
+					-webkit-linear-gradient(-45deg,#f8f8f8,#e8e8e8);
+		}
+		p{
+			-webkit-transition:all .3s;
+			color:#a9a9a9;
+			font-size: 14px;
+			line-height: 2em;
+			text-align: center;
+		}
+		&:hover,&.selected{
+			.task_icon{
+				box-shadow: 0 0 5px @btn_bg;
+				background:url("@{bgUrlBase}taskicons.png") -83px 0,
+					-webkit-linear-gradient(-45deg,#f8f8f8,#e8e8e8);
+			}
+			p{
+				color:@text_dark_color;
+			}
+		}
+	}
+}
+
 #operate{
 	padding-top: 20px;
 	padding-right: 40px;
