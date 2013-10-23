@@ -23,7 +23,11 @@
 			return false;
 		}
 
-		console.log(taskList);
+		localStorage.setItem('market_tasks',JSON.stringify(taskList));
+
+		if(taskList.length === 1 && taskList[0] === 'livereload'){
+			location.href = "buildconfig.html";
+		}
 
 	});
 
