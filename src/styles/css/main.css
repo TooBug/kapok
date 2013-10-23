@@ -354,6 +354,11 @@ body {
 #taskmarket_container li:active .task_icon {
   box-shadow: 0 0 15px #b14d3c;
 }
+#buildconfig_container {
+  margin: 45px 40px 10px 40px;
+  height: 220px;
+  color: #b14d3c;
+}
 #operate {
   padding-top: 20px;
   padding-right: 40px;
