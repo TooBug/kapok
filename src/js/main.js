@@ -5,19 +5,6 @@
 
 	var kapok = {};
 
-	kapok.initConfig = function(projectPath,gruntfilePath){
-
-		gruntBridge.basePath = projectPath;
-		if(gruntfilePath){
-			gruntBridge.gruntfilePath = gruntfilePath;
-		}else{
-			gruntBridge.gruntfilePath = projectPath;
-		}
-		gruntBridge.getConfig();
-		ui.main.updateProjectName(gruntBridge.config.package.name,gruntBridge.config.package.version);
-		
-	};
-
 	kapok.initTask = function(taskName){
 
 		var targetTaskList;
@@ -56,11 +43,12 @@
 
 	};
 
+	// 初始化
 	kapok.init = function(){
+		
+		gruntBridge.initConfig(localStorage.getItem('basePath'),localStorage.getItem('gruntfilePath'));
 
-		// kapok.initConfig('../other/test/');
-		// kapok.initConfig('/Users/TooBug/work/prowork/');
-		kapok.initConfig(localStorage.getItem('basePath'),localStorage.getItem('gruntfilePath'));
+		ui.main.updateProjectName(gruntBridge.config.package.name,gruntBridge.config.package.version);
 		// console.log(gruntBridge.config);
 		kapok.initTask();
 

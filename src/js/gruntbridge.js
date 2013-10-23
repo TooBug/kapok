@@ -8,7 +8,6 @@
 		config:{}
 	};
 
-
 	// 辅助方法
 	var helper = {
 		// 用于grunt对象
@@ -97,6 +96,19 @@
 		}
 	};
 
+	gruntBridge.initConfig = function(projectPath,gruntfilePath,shouldGetConfig){
+
+		gruntBridge.basePath = projectPath;
+		if(gruntfilePath){
+			gruntBridge.gruntfilePath = gruntfilePath;
+		}else{
+			gruntBridge.gruntfilePath = projectPath;
+		}
+		if(typeof shouldGetConfig === 'undefined' || shouldGetConfig){
+			gruntBridge.getConfig();
+		}
+	}
+
 	// 读取Gruntfile
 	gruntBridge.getConfig = function(gruntFileName,packageName){
 		if(!gruntFileName){
@@ -146,6 +158,26 @@
 		});
 	};
 
+	// 写package.json
+	gruntBridge.writePackageJson = function(dependencies){
+
+		var fs = require('fs');
+
+		var packageObj = {
+			name:'kapok project ' + Date.now(),
+			version:'alpha',
+			devDependencies:{
+				grunt:"~0.4.0"
+			}
+		};
+
+		$.extend(packageObj.devDependencies,dependencies);
+		fs.mkdir(path.join(gruntBridge.basePath,'.kapok'),function(){
+			fs.writeFile(path.join(gruntBridge.basePath,'.kapok/package.json'),JSON.stringify(packageObj,null,'\t'),function(){});
+		});
+
+	};
+
 	function readJobs(jobObj){
 
 		gruntBridge.config.jobs = jobObj;
@@ -169,5 +201,5 @@
 	};
 
 	window.gruntBridge = gruntBridge;
-	
+
 }(window);
