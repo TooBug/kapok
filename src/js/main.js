@@ -1,10 +1,18 @@
+/* global gruntBridge,ui,$*/
 ~function(window){
+
+	'use strict';
 
 	var kapok = {};
 
-	kapok.initConfig = function(gruntPath){
+	kapok.initConfig = function(projectPath,gruntfilePath){
 
-		gruntBridge.basePath = gruntPath;
+		gruntBridge.basePath = projectPath;
+		if(gruntfilePath){
+			gruntBridge.gruntfilePath = gruntfilePath;
+		}else{
+			gruntBridge.gruntfilePath = projectPath;
+		}
 		gruntBridge.getConfig();
 		ui.main.updateProjectName(gruntBridge.config.package.name,gruntBridge.config.package.version);
 		
@@ -52,7 +60,7 @@
 
 		// kapok.initConfig('../other/test/');
 		// kapok.initConfig('/Users/TooBug/work/prowork/');
-		kapok.initConfig(localStorage.getItem('basePath'));
+		kapok.initConfig(localStorage.getItem('basePath'),localStorage.getItem('gruntfilePath'));
 		// console.log(gruntBridge.config);
 		kapok.initTask();
 

@@ -31,8 +31,9 @@ $('#projectFolder').change(function(e){
 
 	setTimeout(function(){
 
-		var hasPackageJson = false;
-		var hasGruntFile = false;
+		var path = require('path');
+		var packageJsonPath = '';
+		var gruntfilePath = '';
 		var fileList = {
 			js:[],
 			css:[],
@@ -54,13 +55,13 @@ $('#projectFolder').change(function(e){
 			if(filePath === 'package.json' ||
 					filePath === '.build/package.json' ||
 					filePath === '.kapok/package.json'){
-				hasPackageJson = true;
+				packageJsonPath = path.dirname(filePath);
 			}
 
 			if(filePath === 'Gruntfile.js' ||
 					filePath === '.build/Gruntfile.js' ||
 					filePath === '.kapok/Gruntfile.js'){
-				hasGruntFile = true;
+				gruntfilePath = path.dirname(filePath);
 			}
 
 			if(extMatch && extMatch.length && extMatch.length >= 2){
@@ -81,7 +82,8 @@ $('#projectFolder').change(function(e){
 
 		localStorage.setItem('basePath',folderPath + '/');
 
-		if(hasPackageJson && hasGruntFile){
+		if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
+			localStorage.setItem('gruntfilePath',gruntfilePath)
 			location.href = './main.html';
 		}else{
 			showDialog({

@@ -14,7 +14,7 @@
 		// 用于grunt对象
 		readJSON:function(filePath){
 			// return require('./'+path.join(gruntBridge.basePath,filePath));
-			return require(''+path.join(gruntBridge.basePath,filePath));
+			return require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,filePath));
 		},
 		// 解析标准输出
 		parseOutput:function(output,jobProgress){
@@ -100,12 +100,12 @@
 	// 读取Gruntfile
 	gruntBridge.getConfig = function(gruntFileName,packageName){
 		if(!gruntFileName){
-			gruntFileName = 'Gruntfile.js';
+			gruntFileName = path.join(this.basePath,this.gruntfilePath,'Gruntfile.js');
 		}
 		if(!packageName){
 			packageName = 'package.json';
 		}
-		var gruntFunc = require(path.join(gruntBridge.basePath + gruntFileName));
+		var gruntFunc = require(gruntFileName);
 		gruntFunc(grunt);
 
 		gruntBridge.config.package = helper.readJSON(packageName);
@@ -123,7 +123,7 @@
 
 		// grunt = spawn('which',['node','grunt']);
 		grunt = spawn('/usr/local/bin/node',['/usr/local/bin/grunt',taskName],{
-			cwd:gruntBridge.basePath
+			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
 		});
 
 		// 捕获标准输出
