@@ -1,5 +1,7 @@
-/* global jQuery */
+/* global jQuery,showDialog */
 (function($){
+
+	'use strict';
 
 	$('#taskmarket_container').on('click','li',function(){
 
@@ -19,14 +21,14 @@
 				canCancel:false
 			}).done(function($dialog){
 				$dialog.remove();
-			})
+			});
 			return false;
 		}
 
 		localStorage.setItem('market_tasks',JSON.stringify(taskList));
 
 		if(taskList.length === 1 && taskList[0] === 'livereload'){
-			location.href = "buildconfig.html";
+			location.href = 'buildconfig.html';
 		}
 
 	});
