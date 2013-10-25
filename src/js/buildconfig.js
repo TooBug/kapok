@@ -46,6 +46,7 @@
 
 	});
 
+	localStorage.setItem('gruntfilePath','.kapok');
 	gruntBridge.initConfig(localStorage.getItem('basePath'),localStorage.getItem('gruntfilePath'),false);
 
 })(jQuery);
