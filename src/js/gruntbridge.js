@@ -182,6 +182,54 @@
 
 	};
 
+
+	// 安装依赖
+	gruntBridge.initNpm = function(success,fail){
+
+		var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
+
+		if(proxyStr === 'DIRECT'){
+
+			var log = '';
+			var spawn = require('child_process').spawn;
+
+			var proxy = spawn('/usr/local/bin/npm',['set','proxy=null'],{
+				cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+			});
+
+			proxy.on('exit',function(){
+
+				var npm = spawn('/usr/local/bin/npm',['install'],{
+					cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+				});
+
+				// 捕获标准输出
+				npm.stdout.on('data', function(output){
+					console.log(output+'');
+				});
+
+				// 捕获标准错误输出并将其打印到控制台
+				npm.stderr.on('data', function (data) {
+					console.log('标准错误输出：\n' + data);
+					log += data;
+				});
+
+				// 注册子进程关闭事件
+				npm.on('exit', function (code, signal) {
+					if(code === 0){
+						success(log);
+					}else{
+						fail(log);
+					}
+				});
+				
+			});
+
+
+		}
+
+	};
+
 	// 写package.json
 	gruntBridge.writePackageJson = function(dependencies){
 
