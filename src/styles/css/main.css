@@ -31,7 +31,15 @@ header {
   background: #b14d3c;
   color: #fef2f0;
   font-size: 48px;
-  font-family: HelveticaNeue-Thin;
+  font-family: HelveticaNeue-Thin, Lantinghei SC;
+  overflow: hidden;
+}
+header span {
+  display: inline-block;
+  width: -webkit-calc(100% - 50px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 header a {
   margin-top: 15px;
@@ -68,6 +76,9 @@ span.icon.icon_tool {
 }
 span.icon.icon_list {
   background-position: -60px -30px;
+}
+span.icon.icon_person {
+  background-position: -90px -30px;
 }
 /*详情页*/
 .dialog {
@@ -290,7 +301,8 @@ body {
 }
 #jobList li:hover {
   background: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
+  /*cursor: pointer;*/
+
 }
 #jobList li.done .icon {
   background-position: -58px -57px;
@@ -312,6 +324,48 @@ body {
   background-image: -webkit-linear-gradient(left, #fcebbc, #fcebbc);
   -webkit-transition: all .4s;
   background-size: 0 100%;
+}
+#taskmarket_container ul {
+  margin: 45px 40px 10px 40px;
+  height: 220px;
+}
+#taskmarket_container li {
+  display: inline-block;
+  width: 120px;
+  cursor: pointer;
+}
+#taskmarket_container li .task_icon {
+  -webkit-transition: all .3s;
+  margin: 0 auto;
+  width: 70px;
+  height: 70px;
+  border-radius: 70px;
+  box-shadow: 0 0 2px #bbb;
+  background: url("../../images/taskicons.png") -3px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+}
+#taskmarket_container li p {
+  -webkit-transition: all .3s;
+  color: #a9a9a9;
+  font-size: 14px;
+  line-height: 2em;
+  text-align: center;
+}
+#taskmarket_container li:hover .task_icon,
+#taskmarket_container li.selected .task_icon {
+  box-shadow: 0 0 5px #b14d3c;
+  background: url("../../images/taskicons.png") -83px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+}
+#taskmarket_container li:hover p,
+#taskmarket_container li.selected p {
+  color: #b14d3c;
+}
+#taskmarket_container li:active .task_icon {
+  box-shadow: 0 0 15px #b14d3c;
+}
+#buildconfig_container {
+  margin: 45px 40px 10px 40px;
+  height: 220px;
+  color: #b14d3c;
 }
 #operate {
   padding-top: 20px;

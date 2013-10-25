@@ -18,7 +18,7 @@ module.exports = function(grunt){
 		copy:{
 			prepareBuild:{
 				files:[{
-					src:['**'],
+					src:['**','!styles/less/**','!js/*.js','js/*.min.js'],
 					cwd:'../src',
 					expand:true,
 					dest:'../tmp'
@@ -35,16 +35,27 @@ module.exports = function(grunt){
 			options:{
 				force:true
 			},
-			removeLess:['../tmp/styles/less'],
 			cleanTmp:['../tmp','./app.nw']
+		},
+		uglify:{
+			nw:{
+				files:[{
+					src:['js/*.js','!js/*.min.js','!js/tquery*.js'],
+					dest:'../tmp/',
+					expand:true,
+					cwd:'../src',
+					ext:'.js'
+				}]
+			}
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-compress');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 
-	grunt.registerTask('nw', ['copy:prepareBuild','clean:removeLess','compress:nw','copy:nw','clean:cleanTmp']);
-	grunt.registerTask('test', ['compress:nw']);
+	grunt.registerTask('nw', ['copy:prepareBuild','uglify:nw','compress:nw','copy:nw','clean:cleanTmp']);
+	grunt.registerTask('test', ['uglify:nw']);
 
 };

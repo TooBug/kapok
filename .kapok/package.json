@@ -1,6 +1,6 @@
 {
   "name": "kapok",
-  "version": "0.0.1-pre1",
+  "version": "0.0.1-pre2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-compress": "~0.5.2",
-    "grunt-contrib-copy": "~0.4.1"
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.4"
   }
 }
