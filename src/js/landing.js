@@ -31,8 +31,9 @@ $('#projectFolder').change(function(e){
 
 	setTimeout(function(){
 
-		var hasPackageJson = false;
-		var hasGruntFile = false;
+		var path = require('path');
+		var packageJsonPath = '';
+		var gruntfilePath = '';
 		var fileList = {
 			js:[],
 			css:[],
@@ -54,13 +55,13 @@ $('#projectFolder').change(function(e){
 			if(filePath === 'package.json' ||
 					filePath === '.build/package.json' ||
 					filePath === '.kapok/package.json'){
-				hasPackageJson = true;
+				packageJsonPath = path.dirname(filePath);
 			}
 
 			if(filePath === 'Gruntfile.js' ||
 					filePath === '.build/Gruntfile.js' ||
 					filePath === '.kapok/Gruntfile.js'){
-				hasGruntFile = true;
+				gruntfilePath = path.dirname(filePath);
 			}
 
 			if(extMatch && extMatch.length && extMatch.length >= 2){
@@ -79,14 +80,17 @@ $('#projectFolder').change(function(e){
 
 		});
 
-		if(hasPackageJson && hasGruntFile){
-			localStorage.setItem('basePath',folderPath + '/');
+		localStorage.setItem('basePath',folderPath + '/');
+
+		if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
+			localStorage.setItem('gruntfilePath',gruntfilePath)
 			location.href = './main.html';
 		}else{
 			showDialog({
-				content:'项目目录未找到Grunt构建文件，无法继续。扫描生成构建方案的功能正在开发，敬请期待……',
-				canCancel:false
+				content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
 			}).done(function($dialog){
+				location.href = './taskmarket.html';
+			}).fail(function($dialog){
 				$dialog.remove();
 				$this.prop('disabled',false)
 						.closest('button').prop('disabled',false);

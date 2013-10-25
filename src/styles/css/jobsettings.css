@@ -31,7 +31,7 @@ header {
   background: #b14d3c;
   color: #fef2f0;
   font-size: 48px;
-  font-family: HelveticaNeue-Thin;
+  font-family: HelveticaNeue-Thin, Lantinghei SC;
 }
 header a {
   margin-top: 15px;
@@ -68,6 +68,9 @@ span.icon.icon_tool {
 }
 span.icon.icon_list {
   background-position: -60px -30px;
+}
+span.icon.icon_person {
+  background-position: -90px -30px;
 }
 /*详情页*/
 .dialog {

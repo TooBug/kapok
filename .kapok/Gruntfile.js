@@ -18,7 +18,7 @@ module.exports = function(grunt){
 		copy:{
 			prepareBuild:{
 				files:[{
-					src:['**','!styles/less/**','!js/*.js','js/jquery-1.10.2.min.js'],
+					src:['**','!styles/less/**','!js/*.js','js/*.min.js'],
 					cwd:'../src',
 					expand:true,
 					dest:'../tmp'
@@ -40,7 +40,7 @@ module.exports = function(grunt){
 		uglify:{
 			nw:{
 				files:[{
-					src:['js/*.js','!js/jquery*.js','!js/tquery*.js'],
+					src:['js/*.js','!js/*.min.js','!js/tquery*.js'],
 					dest:'../tmp/',
 					expand:true,
 					cwd:'../src',
