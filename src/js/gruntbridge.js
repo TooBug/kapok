@@ -1,4 +1,7 @@
+/* global require,$*/
 ~function(window){
+
+	'use strict';
 
 	var path = require('path');
 
@@ -6,6 +9,23 @@
 	var gruntBridge = {
 		basePath:'.',
 		config:{}
+	};
+
+	var pluginList = {
+
+		watch:{
+			name:'grunt-contrib-watch',
+			version:'~0.5.3'
+		},
+		connect:{
+			name:'grunt-contrib-connect',
+			version: '~0.5.0'
+		},
+		open:{
+			name:'grunt-open',
+			version: '~0.2.2'
+		}
+
 	};
 
 	// 辅助方法
@@ -107,7 +127,7 @@
 		if(typeof shouldGetConfig === 'undefined' || shouldGetConfig){
 			gruntBridge.getConfig();
 		}
-	}
+	};
 
 	// 读取Gruntfile
 	gruntBridge.getConfig = function(gruntFileName,packageName){
@@ -148,6 +168,7 @@
 		// 捕获标准错误输出并将其打印到控制台
 		grunt.stderr.on('data', function (data) {
 			console.log('标准错误输出：\n' + data);
+			$(window).trigger('gruntBridge.error',[data]);
 		});
 
 		// 注册子进程关闭事件
@@ -156,6 +177,9 @@
 			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
 			$(window).trigger('gruntBridge.exit');
 		});
+
+		gruntBridge._gruntProcess = grunt;
+
 	};
 
 	// 写package.json
@@ -164,16 +188,92 @@
 		var fs = require('fs');
 
 		var packageObj = {
-			name:'kapok project ' + Date.now(),
-			version:'alpha',
+			name:'kapok_project_' + Date.now(),
+			version:'0.0.1',
 			devDependencies:{
 				grunt:"~0.4.0"
 			}
 		};
 
-		$.extend(packageObj.devDependencies,dependencies);
+		if(dependencies && dependencies.length){
+			dependencies.forEach(function(plugin){
+
+				var tmpObj = {};
+				tmpObj[pluginList[plugin].name] = pluginList[plugin].version;
+
+				$.extend(packageObj.devDependencies,tmpObj);
+
+			});
+		}
+
 		fs.mkdir(path.join(gruntBridge.basePath,'.kapok'),function(){
 			fs.writeFile(path.join(gruntBridge.basePath,'.kapok/package.json'),JSON.stringify(packageObj,null,'\t'),function(){});
+		});
+
+	};
+
+	// 写Gruntfile.js
+	gruntBridge.writeGruntFile = function(taskList){
+
+		var fs = require('fs');
+
+		var preText = 'module.exports = function(grunt){\n' +
+				   '\tgrunt.initConfig(';
+		var afterTaskText = ');\n\n';
+		var gruntFileContent = '';
+		var tasks = {};
+		var taskRegistration = [];
+		var taskRegistrationText = '';
+		var taskComponents = {};
+		var taskComponentsText = '';
+
+		for(var taskName in taskList){
+			if(taskList.hasOwnProperty(taskName)){
+				var taskContent = taskList[taskName];
+				if(!taskComponents[taskName]){
+					taskComponents[taskName] = [];
+				}
+				for(var jobName in taskContent){
+					if(taskContent.hasOwnProperty(jobName)){
+						var jobContent = taskContent[jobName];
+						taskComponents[taskName].push(jobName + ':' + taskName);
+						taskRegistration.push(pluginList[jobName].name);
+
+						if(!tasks[jobName]){
+							tasks[jobName] = {};
+						}
+						tasks[jobName][taskName] = jobContent;
+					}
+				}
+			}
+		}
+
+		// console.log(tasks,taskRegistration,taskComponents);
+
+
+		taskRegistrationText = taskRegistration.map(function(task){
+			return '\tgrunt.loadNpmTasks("' + task + '");\n';
+		}).join('');
+
+		for(var taskName in taskComponents){
+			if(taskComponents.hasOwnProperty(taskName)){
+				taskComponentsText += '\tgrunt.registerTask("' + taskName +
+					'",' + JSON.stringify(taskComponents[taskName]) + ');\n';
+			}
+		}
+
+
+		gruntFileContent = preText +
+				JSON.stringify(tasks,null,'\t').replace(/\n/g,'\n\t') +
+				afterTaskText +
+				taskRegistrationText +
+				taskComponentsText +
+				'};';
+
+		// console.log(gruntFileContent);return;
+
+		fs.mkdir(path.join(gruntBridge.basePath,'.kapok'),function(){
+			fs.writeFile(path.join(gruntBridge.basePath,'.kapok/Gruntfile.js'),gruntFileContent,function(){});
 		});
 
 	};

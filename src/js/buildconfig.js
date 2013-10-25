@@ -1,17 +1,48 @@
-/* global jQuery,showDialog */
+/* global jQuery,showDialog,gruntBridge */
 (function($){
 
 	'use strict';
 
-
-
 	$('#operate .build_config').click(function(){
 
-		gruntBridge.writePackageJson({
-			"grunt-contrib-watch": "~0.5.3",
-		    "grunt-contrib-connect": "~0.5.0",
-			"grunt-open": "~0.2.2"
+		gruntBridge.writePackageJson(['watch','open','connect']);
+
+		gruntBridge.writeGruntFile({
+
+			livereload:{
+
+				connect:{
+					options:{
+						port:13111,
+						base:gruntBridge.basePath,
+						livereload:true
+					}
+				},
+				open:{
+					path:'http://localhost:13111'
+				},
+				watch:{
+					files:[
+						gruntBridge.basePath + '**/*.html',
+						gruntBridge.basePath + '**/*.css',
+						gruntBridge.basePath + '**/*.js'
+					],
+					options:{
+						livereload:true
+					}
+				}
+
+			}
+
 		});
+
+		showDialog({
+			content:'配置生成成功！请手工切换到' + gruntBridge.basePath + '.kapok目录并运行npm install安装依赖后使用！',
+			canCancel:false
+		}).done(function(){
+			location.href = 'main.html';
+		});
+
 
 	});
 

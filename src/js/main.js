@@ -79,9 +79,32 @@ $(function(){
 
 	});
 
-	$window.on('gruntBridge.exit',function(){
+	$window.on('gruntBridge.exit',function(e,jobProgress){
+
+		var content,hasError = false;
+
+		/*jobProgress.forEach(function(jobItem){
+
+			if(jobItem.status === 'error'){
+				hasError = true;
+			}
+
+		});*/
+
+		content = hasError?'构建错误！':'构建完成！';
+
 		showDialog({
-			content:'构建完成！',
+			content:content,
+			canCancel:false
+		}).done(function($dialog){
+			ui.main.enableCompileBtn()
+			$dialog.remove();
+		});
+	});
+
+	$window.on('gruntBridge.error',function(e,msg){
+		showDialog({
+			content:'构建出错：' + msg,
 			canCancel:false
 		}).done(function($dialog){
 			ui.main.enableCompileBtn()
@@ -92,6 +115,15 @@ $(function(){
 	$window.on('gruntBridge.jobStart',function(){
 
 		ui.main.clearAllJobProgress();
+
+	});
+
+	var gui = require('nw.gui');
+	var win = gui.Window.get();
+
+	win.on('closed',function(){
+
+		gruntBridge._gruntProcess.kill();
 
 	});
 

@@ -137,6 +137,10 @@
 
 		$('#operate button[type=submit]').click(function(){
 
+			if(!ui.currTaskName){
+				ui.currTaskName = gruntBridge.config.buildTaskList[0].name;
+			}
+
 			$(this).prop('disabled',true);
 			callback(ui.currTaskName);
 

@@ -32,6 +32,14 @@ header {
   color: #fef2f0;
   font-size: 48px;
   font-family: HelveticaNeue-Thin, Lantinghei SC;
+  overflow: hidden;
+}
+header span {
+  display: inline-block;
+  width: -webkit-calc(100% - 50px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 header a {
   margin-top: 15px;

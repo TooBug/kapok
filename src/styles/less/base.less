@@ -98,6 +98,14 @@ header{
 	color:@title_text_color;
 	font-size:48px;
 	font-family: HelveticaNeue-Thin,Lantinghei SC;
+	overflow: hidden;
+	span{
+		display: inline-block;
+		width: ~"-webkit-calc(100% - 50px)";
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
 	a{
 		margin-top: 15px;
 		display: block;
