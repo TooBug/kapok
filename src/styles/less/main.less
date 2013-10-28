@@ -16,6 +16,7 @@ body{
 		-webkit-transform:translate(-50%,-50%);
 		margin-top:20px;
 		font-size:24px;
+		padding-right: 10px;
 		input[type=file]{
 			position: absolute;
 			-webkit-transform: scale(4);
@@ -24,6 +25,31 @@ body{
 			&:disabled{
 				cursor: default;
 			}
+		}
+	}
+	select.btn_more{
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		-webkit-appearance: none;
+		height: 60px;
+		width: 20px;
+		border-radius: 0 3px 3px 0;
+		-webkit-transform: translate(-50%,-50%);
+		margin-top: 20px;
+		margin-left: 80px;
+		background-color: @btn_bg;
+		background-image:url("@{bgUrlBase}icons.png");
+		background-position:-85px 28px;
+		/*background-size:10px 10px;*/
+		outline: 0 none;
+		border: 1px solid lighten(@btn_bg,10%);
+		border-left: 1px solid transparent;
+		color:transparent;
+		&:hover{
+			border-left: 1px solid darken(@btn_bg,10%);
+			box-shadow: -1px 0px 1px 0 lighten(@btn_bg,10%);
+			background-color:lighten(@btn_bg,5%);
 		}
 	}
 }
