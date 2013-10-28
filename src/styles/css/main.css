@@ -217,6 +217,7 @@ body {
   -webkit-transform: translate(-50%, -50%);
   margin-top: 20px;
   font-size: 24px;
+  padding-right: 10px;
 }
 #landing_container button:hover {
   background: #c05846;
@@ -242,6 +243,32 @@ body {
 }
 #landing_container button input[type=file]:disabled {
   cursor: default;
+}
+#landing_container select.btn_more {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-appearance: none;
+  height: 60px;
+  width: 20px;
+  border-radius: 0 3px 3px 0;
+  -webkit-transform: translate(-50%, -50%);
+  margin-top: 20px;
+  margin-left: 80px;
+  background-color: #b14d3c;
+  background-image: url("../../images/icons.png");
+  background-position: -85px 28px;
+  /*background-size:10px 10px;*/
+
+  outline: 0 none;
+  border: 1px solid #c76959;
+  border-left: 1px solid transparent;
+  color: transparent;
+}
+#landing_container select.btn_more:hover {
+  border-left: 1px solid #8b3c2f;
+  box-shadow: -1px 0px 1px 0 #c76959;
+  background-color: #c05846;
 }
 #taskInfo {
   display: none;
