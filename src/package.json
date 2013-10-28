@@ -6,6 +6,7 @@
 		"frame":false,
 		"toolbar": false,
 		"width":600,
-		"height":450
+		"height":450,
+		"resizable":false
 	}
 }
