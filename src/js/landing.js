@@ -106,8 +106,31 @@ $('#projectFolder').change(function(e){
 	},0);
 
 
+}).on('click',function(){
+	/*var $this = $(this);
+	setTimeout(function(){
+		$this.prop('disabled',true)
+				.closest('button').prop('disabled',true);
+	})*/
 });
 
+// 最近项目
+var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '');
+recentProjects.unshift({"name":"选择最近项目"});
 
+ui.landing.setRecentProjects(recentProjects);
+ui.event.bindRecentProjectSwitch(function(value){
+
+	if(value){
+		var targetProject = recentProjects.filter(function(project){
+			return project.name === value;
+		});
+
+		localStorage.setItem('basePath',targetProject[0].basePath);
+		localStorage.setItem('gruntfilePath',targetProject[0].gruntfilePath);
+		location.href = './main.html';
+	}
+
+});
 
 })(jQuery);

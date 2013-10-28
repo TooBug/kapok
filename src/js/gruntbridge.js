@@ -103,6 +103,32 @@
 					});
 					break;
 			}
+		},
+		// 设置最近打开项目
+		setRecentProjects:function(projectName,basePath,gruntfilePath){
+			var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '[]');
+			var targetProject = recentProjects.filter(function(project){
+
+				return project.name === projectName;
+
+			});
+
+			if(targetProject.length){
+
+				targetProject.basePath = basePath;
+				targetProject.gruntfilePath = gruntfilePath;
+
+			}else{
+
+				recentProjects.push({
+					name:projectName,
+					basePath:basePath,
+					gruntfilePath:gruntfilePath
+				});
+			}
+
+			localStorage.setItem('recentProjects',JSON.stringify(recentProjects));
+
 		}
 	};
 
@@ -122,11 +148,13 @@
 		if(gruntfilePath){
 			gruntBridge.gruntfilePath = gruntfilePath;
 		}else{
-			gruntBridge.gruntfilePath = projectPath;
+			gruntBridge.gruntfilePath = '.';
 		}
 		if(typeof shouldGetConfig === 'undefined' || shouldGetConfig){
 			gruntBridge.getConfig();
+			helper.setRecentProjects(gruntBridge.config.package.name,gruntBridge.basePath,gruntBridge.gruntfilePath);
 		}
+
 	};
 
 	// 读取Gruntfile
@@ -179,6 +207,71 @@
 		});
 
 		gruntBridge._gruntProcess = grunt;
+
+	};
+
+
+	// 安装依赖
+	gruntBridge.initNpm = function(success,fail){
+
+		var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
+		var proxyRegExp = /^PROXY (.*)$/;
+
+		var spawn = require('child_process').spawn;
+		var proxyCommand = 'proxy=';
+
+		if(proxyStr === 'DIRECT'){
+			proxyCommand += 'null';
+		}else{
+			var proxyMatch = proxyStr.match(proxyRegExp);
+			var proxyUrl;
+
+			if(proxyMatch && proxyMatch.length && proxyMatch.length >= 2){
+				proxyUrl = 'http://' + proxyMatch[1];
+			}else{
+				proxyUrl = 'null';
+			}
+			proxyCommand += proxyUrl;
+		}
+		
+		var proxy = spawn('/usr/local/bin/node',['/usr/local/bin/npm','set',proxyCommand],{
+			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+		});
+
+		proxy.on('exit',function(){
+			initNpm(success,fail);
+		});
+
+
+		function initNpm(success,fail){
+
+			var log = '';
+
+			var npm = spawn('/usr/local/bin/node',['/usr/local/bin/npm','install'],{
+				cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+			});
+
+			// 捕获标准输出
+			npm.stdout.on('data', function(output){
+				console.log(output+'');
+			});
+
+			// 捕获标准错误输出并将其打印到控制台
+			npm.stderr.on('data', function (data) {
+				console.log('标准错误输出：\n' + data);
+				log += data;
+			});
+
+			// 注册子进程关闭事件
+			npm.on('exit', function (code, signal) {
+				if(code === 0){
+					success(log);
+				}else{
+					fail(log);
+				}
+			});
+				
+		}
 
 	};
 

@@ -36,12 +36,28 @@
 
 		});
 
-		showDialog({
-			content:'配置生成成功！请手工切换到' + gruntBridge.basePath + '.kapok目录并运行npm install安装依赖后使用！',
-			canCancel:false
-		}).done(function(){
-			location.href = 'main.html';
+		localStorage.setItem('gruntfilePath','.kapok');
+
+		gruntBridge.initNpm(function(){
+
+			showDialog({
+				content:'配置成功！',
+				canCancel:false
+			}).done(function(){
+				location.href = 'main.html';
+			});
+
+		},function(){
+			
+			showDialog({
+				content:'依赖下载失败！请手工切换到' + gruntBridge.basePath + '.kapok目录并运行npm install安装依赖后使用！',
+				canCancel:false
+			}).done(function(){
+				location.href = 'main.html';
+			});
+
 		});
+
 
 
 	});
