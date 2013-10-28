@@ -187,45 +187,62 @@
 	gruntBridge.initNpm = function(success,fail){
 
 		var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
+		var proxyRegExp = /^PROXY (.*)$/;
+
+		var spawn = require('child_process').spawn;
+		var proxyCommand = 'proxy=';
 
 		if(proxyStr === 'DIRECT'){
+			proxyCommand += 'null';
+		}else{
+			var proxyMatch = proxyStr.match(proxyRegExp);
+			var proxyUrl;
+
+			if(proxyMatch && proxyMatch.length && proxyMatch.length >= 2){
+				proxyUrl = 'http://' + proxyMatch[1];
+			}else{
+				proxyUrl = 'null';
+			}
+			proxyCommand += proxyUrl;
+		}
+		
+		var proxy = spawn('/usr/local/bin/npm',['set',proxyCommand],{
+			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+		});
+
+		proxy.on('exit',function(){
+			initNpm(success,fail);
+		});
+
+
+		function initNpm(success,fail){
 
 			var log = '';
-			var spawn = require('child_process').spawn;
 
-			var proxy = spawn('/usr/local/bin/npm',['set','proxy=null'],{
+			var npm = spawn('/usr/local/bin/npm',['install'],{
 				cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
 			});
 
-			proxy.on('exit',function(){
-
-				var npm = spawn('/usr/local/bin/npm',['install'],{
-					cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
-				});
-
-				// 捕获标准输出
-				npm.stdout.on('data', function(output){
-					console.log(output+'');
-				});
-
-				// 捕获标准错误输出并将其打印到控制台
-				npm.stderr.on('data', function (data) {
-					console.log('标准错误输出：\n' + data);
-					log += data;
-				});
-
-				// 注册子进程关闭事件
-				npm.on('exit', function (code, signal) {
-					if(code === 0){
-						success(log);
-					}else{
-						fail(log);
-					}
-				});
-				
+			// 捕获标准输出
+			npm.stdout.on('data', function(output){
+				console.log(output+'');
 			});
 
+			// 捕获标准错误输出并将其打印到控制台
+			npm.stderr.on('data', function (data) {
+				console.log('标准错误输出：\n' + data);
+				log += data;
+			});
 
+			// 注册子进程关闭事件
+			npm.on('exit', function (code, signal) {
+				if(code === 0){
+					success(log);
+				}else{
+					fail(log);
+				}
+			});
+				
 		}
 
 	};
