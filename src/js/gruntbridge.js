@@ -234,7 +234,7 @@
 			proxyCommand += proxyUrl;
 		}
 		
-		var proxy = spawn('/usr/local/bin/npm',['set',proxyCommand],{
+		var proxy = spawn('/usr/local/bin/node',['/usr/local/bin/npm','set',proxyCommand],{
 			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
 		});
 
@@ -247,7 +247,7 @@
 
 			var log = '';
 
-			var npm = spawn('/usr/local/bin/npm',['install'],{
+			var npm = spawn('/usr/local/bin/node',['/usr/local/bin/npm','install'],{
 				cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
 			});
 
