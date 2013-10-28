@@ -63,6 +63,15 @@
 
 	};
 
+	/* landingUI操作 */
+	ui.landing = {};
+	ui.landing.setRecentProjects = function(recentProjects){
+
+		var projectsHtml = MicroTmpl('<option value="{%name%}">{%name%}</option>',recentProjects);
+		$('#landing_container .btn_more').html(projectsHtml);
+
+	};
+
 	/* Job设置页UI操作 */
 
 	ui.jobSettings = {};
@@ -144,6 +153,14 @@
 			$(this).prop('disabled',true);
 			callback(ui.currTaskName);
 
+		});
+
+	};
+
+	ui.event.bindRecentProjectSwitch = function(callback){
+
+		$('#landing_container .btn_more').change(function(){
+			callback($(this).val());
 		});
 
 	};

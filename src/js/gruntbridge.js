@@ -103,6 +103,32 @@
 					});
 					break;
 			}
+		},
+		// 设置最近打开项目
+		setRecentProjects:function(projectName,basePath,gruntfilePath){
+			var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '[]');
+			var targetProject = recentProjects.filter(function(project){
+
+				return project.name === projectName;
+
+			});
+
+			if(targetProject.length){
+
+				targetProject.basePath = basePath;
+				targetProject.gruntfilePath = gruntfilePath;
+
+			}else{
+
+				recentProjects.push({
+					name:projectName,
+					basePath:basePath,
+					gruntfilePath:gruntfilePath
+				});
+			}
+
+			localStorage.setItem('recentProjects',JSON.stringify(recentProjects));
+
 		}
 	};
 
@@ -122,11 +148,13 @@
 		if(gruntfilePath){
 			gruntBridge.gruntfilePath = gruntfilePath;
 		}else{
-			gruntBridge.gruntfilePath = projectPath;
+			gruntBridge.gruntfilePath = '.';
 		}
 		if(typeof shouldGetConfig === 'undefined' || shouldGetConfig){
 			gruntBridge.getConfig();
+			helper.setRecentProjects(gruntBridge.config.package.name,gruntBridge.basePath,gruntBridge.gruntfilePath);
 		}
+
 	};
 
 	// 读取Gruntfile
