@@ -222,6 +222,14 @@ body{
 	padding-top: 20px;
 	padding-right: 40px;
 	text-align: right;
+	a{
+		color:@text_dark_color;
+		text-decoration: none;
+		&:hover{
+			color:lighten(@text_dark_color,5%);
+			text-decoration: underline;
+		}
+	}
 	button{
 		.btn();
 		margin-left: 10px;

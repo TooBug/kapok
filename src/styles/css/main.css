@@ -417,6 +417,14 @@ body {
   padding-right: 40px;
   text-align: right;
 }
+#operate a {
+  color: #b14d3c;
+  text-decoration: none;
+}
+#operate a:hover {
+  color: #c05846;
+  text-decoration: underline;
+}
 #operate button {
   background: #b14d3c;
   border: 0 none;
