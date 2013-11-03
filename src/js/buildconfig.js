@@ -5,7 +5,14 @@
 
 	$('#operate .build_config').click(function(){
 
+		$('#operate .build_config').prop('disabled',true);
+
+		writeLog('生成package.json……');
+
 		gruntBridge.writePackageJson(['watch','open','connect']);
+
+		writeLog('done<br />');
+		writeLog('生成Gruntfile.js……');
 
 		gruntBridge.writeGruntFile({
 
@@ -36,7 +43,15 @@
 
 		});
 
+		writeLog('done<br />');
+
+		writeLog('写入配置缓存……');
+
 		localStorage.setItem('gruntfilePath','.kapok');
+
+		writeLog('done<br />');
+
+		writeLog('初始化依赖库……');
 
 		gruntBridge.initNpm(function(){
 
@@ -47,6 +62,9 @@
 				location.href = 'main.html';
 			});
 
+			writeLog('done<br />');
+			
+
 		},function(){
 			
 			showDialog({
@@ -56,6 +74,36 @@
 				location.href = 'main.html';
 			});
 
+			writeLog('fail<br />');
+
+		},function(eventType,data){
+
+			var msg;
+
+			switch(eventType){
+				case 'proxyStart':
+					msg = '检测代理……'
+					break;
+				case 'proxyEnd':
+					if(data === 'noProxy'){
+						msg = '无代理<br />';
+					}else{
+						msg = data + '<br />';
+					}
+					break;
+				case 'npmInstallStart':
+					msg = '开始下载：<br />';
+					break;
+				case 'npmInstallOutput':
+					msg = data.replace(/\n/g,'<br />');
+					break;
+				case 'npmInstallError':
+					msg = data + '<br />';
+					break;
+			}
+
+			writeLog(msg);
+
 		});
 
 
@@ -63,5 +111,9 @@
 	});
 
 	gruntBridge.initConfig(localStorage.getItem('basePath'),localStorage.getItem('gruntfilePath'),false);
+
+	function writeLog(msg){
+		$('p.log').append(msg);
+	}
 
 })(jQuery);

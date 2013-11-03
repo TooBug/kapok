@@ -406,6 +406,12 @@ body {
   height: 220px;
   color: #b14d3c;
 }
+#buildconfig_container p.log {
+  color: #888;
+  font-size: 12px;
+  height: 220px;
+  overflow: auto;
+}
 #operate {
   padding-top: 20px;
   padding-right: 40px;
