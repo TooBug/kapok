@@ -3,6 +3,20 @@
 
 	'use strict';
 
+	var osType = require('os').type();
+	var isWindows = /windows/i.test(osType);
+
+	var nodePath,npmPath,gruntPath;
+	if(isWindows){
+		nodePath = 'node';
+		npmPath = 'npm.cmd';
+		gruntPath = 'C:\\Documents and Settings\\Administrator\\Application Data\\npm\\node_modules\\grunt-cli\\bin\\grunt';
+	}else{
+		nodePath = '/usr/local/bin/node';
+		npmPath = '/usr/local/bin/npm';
+		gruntPath = '/usr/local/bin/grunt';
+	}
+
 	var path = require('path');
 
 	// 用于与Grunt通讯的对象，负责读取及调用Grunt
@@ -182,7 +196,7 @@
 			grunt;
 
 		// grunt = spawn('which',['node','grunt']);
-		grunt = spawn('/usr/local/bin/node',['/usr/local/bin/grunt',taskName],{
+		grunt = spawn(nodePath,[gruntPath,taskName],{
 			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
 		});
 
@@ -239,9 +253,13 @@
 
 		}
 		
-		var proxy = spawn('/usr/local/bin/node',['/usr/local/bin/npm','set',proxyCommand],{
-			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
-		});
+		var proxy;
+
+		if(isWindows){
+			proxy = spawn(npmPath,['set',proxyCommand]);
+		}else{		
+			proxy = spawn(nodePath,[npmPath,'set',proxyCommand]);
+		}
 
 		proxy.on('exit',function(){
 			initNpm(success,fail);
@@ -254,9 +272,16 @@
 
 			var log = '';
 
-			var npm = spawn('/usr/local/bin/node',['/usr/local/bin/npm','install'],{
-				cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
-			});
+			var npm;
+			if(isWindows){
+				npm = spawn(npmPath,['install'],{
+					cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+				});
+			}else{
+				npm = spawn(nodePath,[npmPath,'install'],{
+					cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
+				});
+			} 
 
 			// 捕获标准输出
 			npm.stdout.on('data', function(output){

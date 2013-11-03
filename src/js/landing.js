@@ -6,6 +6,7 @@
 
 $('#projectFolder').change(function(e){
 
+	var path = require('path');
 	var $this = $(this);
 
 	var files = e.originalEvent.target.files;
@@ -26,12 +27,11 @@ $('#projectFolder').change(function(e){
 	$this.prop('disabled',true)
 			.closest('button').prop('disabled',true);
 
-	folderPath = files[0].path.replace(files[0].webkitRelativePath,'') +
+	folderPath = files[0].path.replace(files[0].webkitRelativePath.replace(/\//g,path.sep),'') +
 			folderMatch[1];
 
 	setTimeout(function(){
 
-		var path = require('path');
 		var packageJsonPath = '';
 		var gruntfilePath = '';
 		var fileList = {
@@ -80,7 +80,7 @@ $('#projectFolder').change(function(e){
 
 		});
 
-		localStorage.setItem('basePath',folderPath + '/');
+		localStorage.setItem('basePath',folderPath + path.sep);
 
 		if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
 			localStorage.setItem('gruntfilePath',gruntfilePath)
