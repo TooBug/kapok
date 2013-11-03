@@ -212,7 +212,9 @@
 
 
 	// 安装依赖
-	gruntBridge.initNpm = function(success,fail){
+	gruntBridge.initNpm = function(success,fail,progress){
+
+		progress('proxyStart');
 
 		var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
 		var proxyRegExp = /^PROXY (.*)$/;
@@ -222,6 +224,7 @@
 
 		if(proxyStr === 'DIRECT'){
 			proxyCommand += 'null';
+			progress('proxyEnd','noProxy');
 		}else{
 			var proxyMatch = proxyStr.match(proxyRegExp);
 			var proxyUrl;
@@ -232,6 +235,8 @@
 				proxyUrl = 'null';
 			}
 			proxyCommand += proxyUrl;
+			progress('proxyEnd',proxyUrl);
+
 		}
 		
 		var proxy = spawn('/usr/local/bin/node',['/usr/local/bin/npm','set',proxyCommand],{
@@ -245,6 +250,8 @@
 
 		function initNpm(success,fail){
 
+			progress('npmInstallStart');
+
 			var log = '';
 
 			var npm = spawn('/usr/local/bin/node',['/usr/local/bin/npm','install'],{
@@ -254,11 +261,13 @@
 			// 捕获标准输出
 			npm.stdout.on('data', function(output){
 				console.log(output+'');
+				progress('npmInstallOutput',output+'');
 			});
 
 			// 捕获标准错误输出并将其打印到控制台
 			npm.stderr.on('data', function (data) {
 				console.log('标准错误输出：\n' + data);
+				progress('npmInstallError',data+'');
 				log += data;
 			});
 

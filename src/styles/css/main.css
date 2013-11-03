@@ -307,51 +307,62 @@ body {
   visibility: hidden;
   clear: both;
 }
+@-webkit-keyframes flash {
+  from {
+    box-shadow: 0 0 0 #b14d3c;
+  }
+  50% {
+    box-shadow: 0 0 15px #b14d3c;
+  }
+  to {
+    box-shadow: 0 0 0 #b14d3c;
+  }
+}
 #jobList {
-  margin: 45px 40px 10px 40px;
+  margin: 40px 40px 10px 40px;
+  padding-top: 5px;
+  /*retina下被“切头”的问题*/
+
   height: 220px;
   overflow: auto;
   list-style: none;
   color: #000;
 }
 #jobList li {
-  margin-bottom: 5px;
-  height: 28px;
-  line-height: 28px;
-  font-size: 20px;
-}
-#jobList li .icon {
   display: inline-block;
-  width: 20px;
-  height: 25px;
-  vertical-align: -3px;
-  background: url("../../images/icons.png");
+  width: 120px;
+  cursor: pointer;
 }
-#jobList li:hover {
-  background: rgba(255, 255, 255, 0.1);
-  /*cursor: pointer;*/
+#jobList li .task_icon {
+  -webkit-transition: box-shadow 1s;
+  margin: 0 auto;
+  width: 70px;
+  height: 70px;
+  border-radius: 70px;
+  box-shadow: 0 0 2px #bbb;
+  background: url("../../images/taskicons.png") -3px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+}
+#jobList li p {
+  -webkit-transition: color 1s;
+  color: #a9a9a9;
+  font-size: 14px;
+  line-height: 2em;
+  text-align: center;
+}
+#jobList li.done .task_icon {
+  box-shadow: 0 0 5px #b14d3c;
+  background: url("../../images/taskicons.png") -83px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+}
+#jobList li.done p {
+  color: #b14d3c;
+}
+#jobList li.waiting .task_icon {
+  /*box-shadow: 0 0 15px @btn_bg;*/
 
 }
-#jobList li.done .icon {
-  background-position: -58px -57px;
-}
-#jobList li.error .icon {
-  background-position: -88px -57px;
-}
-#jobList li.doing .icon {
-  background-position: -28px -57px;
-}
-#jobList li.waiting .icon {
-  background-position: 2px -57px;
-}
-#jobList li .title {
-  display: inline-block;
-  width: -webkit-calc(100% - 40px);
-  padding-left: .5em;
-  background-repeat: no-repeat;
-  background-image: -webkit-linear-gradient(left, #fcebbc, #fcebbc);
-  -webkit-transition: all .4s;
-  background-size: 0 100%;
+#jobList li.doing .task_icon {
+  -webkit-animation: flash 1s;
+  -webkit-animation-iteration-count: infinite;
 }
 #taskmarket_container ul {
   margin: 45px 40px 10px 40px;
@@ -395,10 +406,24 @@ body {
   height: 220px;
   color: #b14d3c;
 }
+#buildconfig_container p.log {
+  color: #888;
+  font-size: 12px;
+  height: 220px;
+  overflow: auto;
+}
 #operate {
   padding-top: 20px;
   padding-right: 40px;
   text-align: right;
+}
+#operate a {
+  color: #b14d3c;
+  text-decoration: none;
+}
+#operate a:hover {
+  color: #c05846;
+  text-decoration: underline;
 }
 #operate button {
   background: #b14d3c;
