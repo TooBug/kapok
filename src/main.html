@@ -24,17 +24,13 @@
 		</div>
 	</section>
 	<ul id="jobList">
-		<li class="done">
+		<!-- <li class="waiting" data-jobname="{%jobName%}">
 			<span class="icon">&nbsp;</span>
-			<span class="title">压缩JS</span>
-		</li>
-		<li class="doing">
-			<span class="icon">&nbsp;</span>
-			<span class="title">合并静态文件</span>
-		</li>
-		<li class="waiting">
-			<span class="icon">&nbsp;</span>
-			<span class="title">复制其它资源文件</span>
+			<span class="title">{%jobName%}</span>
+		</li> -->
+		<li data-jobname="{%jobName%}">
+			<div class="task_icon icon_{%jobName%}"></div>
+			<p>{%jobName%}</p>
 		</li>
 	</ul>
 	<section id="operate">
@@ -56,9 +52,9 @@
 	<script src="./js/main.js"></script>
 
 	<template id="tmpl_jobListItem">
-		<li class="waiting" data-jobname="{%jobName%}">
-			<span class="icon">&nbsp;</span>
-			<span class="title">{%jobName%}</span>
+		<li data-jobname="{%jobName%}">
+			<div class="task_icon icon_{%jobName%}"></div>
+			<p>{%jobName%}</p>
 		</li>
 	</template>
 

@@ -97,49 +97,66 @@ body{
 	background-position: @x + 2px @y + 3px;
 }
 
+@-webkit-keyframes flash{
+	from{
+		box-shadow: 0 0 0 @btn_bg;
+	}
+	50%{
+		box-shadow: 0 0 15px @btn_bg;
+	}
+	to{
+		box-shadow: 0 0 0 @btn_bg;
+	}
+}
+
 #jobList{
-	margin:45px 40px 10px 40px;
+	margin:40px 40px 10px 40px;
+	padding-top: 5px;/*retina下被“切头”的问题*/
 	height:220px;
 	overflow: auto;
 	list-style: none;
 	color:#000;
 	li{
-		margin-bottom: 5px;
-		height:28px;
-		line-height: 28px;
-		font-size: 20px;
-		.icon{
-			display: inline-block;
-			width:20px;
-			height:25px;
-			vertical-align: -3px;
-			background:url("@{bgUrlBase}icons.png");
+		display: inline-block;
+		width:120px;
+		cursor:pointer;
+		.task_icon{
+			-webkit-transition:box-shadow 1s;
+			margin:0 auto;
+			width:70px;
+			height:70px;
+			border-radius:70px;
+			box-shadow: 0 0 2px #bbb;
+			background:url("@{bgUrlBase}taskicons.png") -3px 0,
+					-webkit-linear-gradient(-45deg,#f8f8f8,#e8e8e8);
 		}
-		&:hover{
-			background: rgba(255,255,255,.1);
-			/*cursor: pointer;*/
+		p{
+			-webkit-transition:color 1s;
+			color:#a9a9a9;
+			font-size: 14px;
+			line-height: 2em;
+			text-align: center;
 		}
-		&.done .icon{
-			.offsetIcon(-60px,-60px);
+		&.done{
+			.task_icon{
+				box-shadow: 0 0 5px @btn_bg;
+				background:url("@{bgUrlBase}taskicons.png") -83px 0,
+					-webkit-linear-gradient(-45deg,#f8f8f8,#e8e8e8);
+			}
+			p{
+				color:@text_dark_color;
+			}
 		}
-		&.error .icon{
-			.offsetIcon(-90px,-60px);
+		&.waiting{
+			.task_icon{
+				/*box-shadow: 0 0 15px @btn_bg;*/
+			}
 		}
-		&.doing .icon{
-			.offsetIcon(-30px,-60px);
-		}
-		&.waiting .icon{
-			.offsetIcon(0,-60px);
-		}
-
-		.title{
-			display: inline-block;
-			width: ~"-webkit-calc(100% - 40px)";
-			padding-left: .5em;
-			background-repeat: no-repeat;
-			.gradient(left,rgb(252,235,188),rgb(252,235,188));
-			-webkit-transition: all .4s;
-			background-size: 0 100%;
+		&.doing{
+			.task_icon{
+				-webkit-animation:flash 1s;
+				-webkit-animation-iteration-count: infinite;
+			}
 		}
 	}
 }

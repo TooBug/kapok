@@ -12,10 +12,7 @@
 	ui.main.updateJobProgress = function(jobName,progressObj){
 
 		$('#jobList li[data-jobname="' + jobName + '"]').removeClass('waiting doing done')
-			.addClass(progressObj.status === 'done'?'done':'waiting')
-			.find('.title')
-			.css('background-size',progressObj.progress + '% 100%');
-
+			.addClass(progressObj.status === 'done'?'done':'doing');
 	};
 
 	ui.main.clearAllJobProgress = function(jobName,progressObj){
