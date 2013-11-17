@@ -126,6 +126,11 @@ span.icon.icon_person {
   color: #333;
   word-wrap: break-word;
 }
+.dialog .bd p.checkList {
+  text-align: center;
+  font-size: 12px;
+  padding-top: 1em;
+}
 .dialog .ctrl {
   height: 50px;
   padding: 10px 0;

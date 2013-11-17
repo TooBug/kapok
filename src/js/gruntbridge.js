@@ -217,7 +217,7 @@
 		grunt.on('exit', function (code, signal) {
 			helper.parseExit(code,jobProgress);
 			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
-			$(window).trigger('gruntBridge.exit');
+			$(window).trigger('gruntBridge.exit',[jobProgress]);
 		});
 
 		gruntBridge._gruntProcess = grunt;
@@ -315,7 +315,7 @@
 		var fs = require('fs');
 
 		var packageObj = {
-			name:'kapok_project_' + Date.now(),
+			name:'kapok_' + (Date.now() + '').substr(2,4),
 			version:'0.0.1',
 			devDependencies:{
 				grunt:"~0.4.0"
