@@ -346,6 +346,7 @@ body {
   border-radius: 70px;
   box-shadow: 0 0 2px #bbb;
   background: url("../../images/taskicons.png") -3px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+  background-image: -webkit-image-set(url("../../images/taskicons.png") 1x, url("../../images/taskicons@2x.png") 2x);
 }
 #jobList li p {
   -webkit-transition: color 1s;
@@ -357,6 +358,7 @@ body {
 #jobList li.done .task_icon {
   box-shadow: 0 0 5px #b14d3c;
   background: url("../../images/taskicons.png") -83px 0, -webkit-linear-gradient(-45deg, #f8f8f8, #e8e8e8);
+  background-image: -webkit-image-set(url("../../images/taskicons.png") 1x, url("../../images/taskicons@2x.png") 2x);
 }
 #jobList li.done p {
   color: #b14d3c;
