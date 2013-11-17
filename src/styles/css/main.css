@@ -36,7 +36,7 @@ header {
 }
 header span {
   display: inline-block;
-  width: -webkit-calc(100% - 50px);
+  width: -webkit-calc(100% - 60px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -54,10 +54,10 @@ header a:hover {
   opacity: 1;
 }
 header a.min_btn {
-  background-position: 0 0;
+  background-position: -30px 0;
 }
 header a.max_btn {
-  background-position: -30px 0;
+  background-position: -60px 0;
 }
 header a.close_btn {
   background-position: 0 0;
