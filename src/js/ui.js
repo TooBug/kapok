@@ -203,9 +203,21 @@
 
 			if($this.hasClass('close_btn')){
 
+				var content = '确认要关闭kapok么？';
+
+				// 主页面退出时提供清理构建文件的选项
+				if(location.href.indexOf('main.html') > -1){
+					content += '<p class="checkList"><input type="checkbox" id="cleanKapokFiles" /><label for="cleanKapokFiles">（安全）清理构建使用的文件</label></p>';
+				}
+
 				showDialog({
-					content:'确认要关闭kapok么？'
+					content:content
 				}).done(function($dialog){
+					if($dialog.find('#cleanKapokFiles:checked').length){
+
+						kapok.removeBuildingFiles();
+
+					}
 					gui.App.quit();
 				}).fail(function($dialog){
 					$dialog.remove();

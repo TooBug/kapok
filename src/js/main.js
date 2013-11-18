@@ -22,7 +22,6 @@
 		}
 
 		var targetTask = targetTaskList[0];
-		// ui.main.updateTaskList(gruntBridge.config.buildTaskList,targetTask.name);
 		ui.main.fillJobList(targetTask.jobList);
 
 	};
@@ -52,6 +51,17 @@
 		// console.log(gruntBridge.config);
 		kapok.initTask();
 
+	};
+
+	// 移除构建文件
+	kapok.removeBuildingFiles = function(){
+		var ret = false;
+		var path = require('path');
+		var fs = require('fs-extra');
+		if(gruntBridge.gruntfilePath !== '.'){
+			ret = fs.removeSync(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath));
+		}
+		return ret;
 	};
 
 	window.kapok = kapok;
@@ -135,6 +145,15 @@ $(function(){
 
 	});
 
-	kapok.init();
+	try{
+		kapok.init();
+	}catch(e){
+		showDialog({
+			content:'初始化出错，请检查构建文件是否存在',
+			canCancel:false
+		}).done(function($dialog){
+			location.href='landing.html';
+		});
+	}
 	
 });
