@@ -32,8 +32,17 @@ header {
   color: #fef2f0;
   font-size: 48px;
   font-family: HelveticaNeue-Thin, Lantinghei SC;
+  overflow: hidden;
+}
+header span {
+  display: inline-block;
+  width: -webkit-calc(100% - 60px);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 header a {
+  -webkit-app-region: no-drag;
   margin-top: 15px;
   display: block;
   float: right;
@@ -46,10 +55,10 @@ header a:hover {
   opacity: 1;
 }
 header a.min_btn {
-  background-position: 0 0;
+  background-position: -30px 0;
 }
 header a.max_btn {
-  background-position: -30px 0;
+  background-position: -60px 0;
 }
 header a.close_btn {
   background-position: 0 0;
@@ -79,9 +88,7 @@ span.icon.icon_person {
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
   /*width: 450px;*/
-
   /*height: 230px;*/
-
   background: #FFF;
   border: 5px solid #C1C4C6;
   z-index: 9999;
@@ -98,24 +105,26 @@ span.icon.icon_person {
   background: url("../../images/icons.png");
   opacity: .8;
   /*background-image: -webkit-image-set(url(../images/delete.png) 1x, url(../images/delete_2x.png) 2x);*/
-
   cursor: pointer;
 }
 .dialog .close:hover {
   opacity: 1;
   /*background-image: -webkit-image-set(url(../images/delete_hover.png) 1x, url(../images/delete_hover_2x.png) 2x);*/
-
 }
 .dialog .bd {
   /*min-height: 90px;*/
-
   padding: 30px;
   /*text-align: center;*/
-
   line-height: 30px;
   background: #fff;
   font-size: 16px;
   color: #333;
+  word-wrap: break-word;
+}
+.dialog .bd p.checkList {
+  text-align: center;
+  font-size: 12px;
+  padding-top: 1em;
 }
 .dialog .ctrl {
   height: 50px;
@@ -124,6 +133,7 @@ span.icon.icon_person {
   text-align: center;
 }
 .dialog .ctrl .dialog_cancel_btn {
+  -webkit-app-region: no-drag;
   background: #b14d3c;
   border-radius: 2px;
   box-shadow: 0 0 0 1px #8b3c2f, inset 0 0 0 1px #c76959;
@@ -161,6 +171,7 @@ span.icon.icon_person {
   box-shadow: none;
 }
 .dialog .ctrl .dialog_ok_btn {
+  -webkit-app-region: no-drag;
   background: #b14d3c;
   border: 0 none;
   border-radius: 2px;
@@ -193,7 +204,6 @@ body {
 }
 #jobInfo {
   /*margin:20px;*/
-
   display: -webkit-flex;
 }
 #jobInfo ul {
