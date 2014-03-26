@@ -118,6 +118,8 @@ $(function(){
 			$dialog.remove();
 		});
 
+		ui.main.enableCompileBtn();
+
 	});
 
 	$window.on('gruntBridge.error',function(e,msg){
