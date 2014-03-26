@@ -1,6 +1,6 @@
 {
   "name": "kapok",
-  "version": "0.0.1-pre4",
+  "version": "0.0.1",
   "description": "f2e build factory",
   "main": "index.js",
   "scripts": {

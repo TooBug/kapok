@@ -6,6 +6,7 @@
 
 $('#projectFolder').change(function(e){
 
+	var path = require('path');
 	var $this = $(this);
 
 	var files = e.originalEvent.target.files;
@@ -26,12 +27,11 @@ $('#projectFolder').change(function(e){
 	$this.prop('disabled',true)
 			.closest('button').prop('disabled',true);
 
-	folderPath = files[0].path.replace(files[0].webkitRelativePath,'') +
+	folderPath = files[0].path.replace(files[0].webkitRelativePath.replace(/\//g,path.sep),'') +
 			folderMatch[1];
 
 	setTimeout(function(){
 
-		var path = require('path');
 		var packageJsonPath = '';
 		var gruntfilePath = '';
 		var fileList = {
@@ -80,7 +80,7 @@ $('#projectFolder').change(function(e){
 
 		});
 
-		localStorage.setItem('basePath',folderPath + '/');
+		localStorage.setItem('basePath',folderPath + path.sep);
 
 		if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
 			localStorage.setItem('gruntfilePath',gruntfilePath)
@@ -89,6 +89,7 @@ $('#projectFolder').change(function(e){
 			showDialog({
 				content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
 			}).done(function($dialog){
+				localStorage.setItem('gruntfilePath','.kapok');
 				location.href = './taskmarket.html';
 			}).fail(function($dialog){
 				$dialog.remove();
@@ -115,7 +116,7 @@ $('#projectFolder').change(function(e){
 });
 
 // 最近项目
-var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '');
+var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '[]');
 recentProjects.unshift({"name":"选择最近项目"});
 
 ui.landing.setRecentProjects(recentProjects);

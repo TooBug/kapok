@@ -56,7 +56,8 @@
 
 	ui.main.enableCompileBtn = function(){
 
-		$('#operate button[type=submit]').prop('disabled',false);
+		// $('#operate button[type=submit]').prop('disabled',false);
+		$('#operate button[type=submit]').text('开始编译');
 
 	};
 
@@ -141,14 +142,38 @@
 
 	ui.event.bindCompile = function(callback){
 
-		$('#operate button[type=submit]').click(function(){
+		$('#operate button[type=submit]').click(function(e){
 
-			if(!ui.currTaskName){
-				ui.currTaskName = gruntBridge.config.buildTaskList[0].name;
+			var $this = $(this);
+			if(!$this.data('status') || $this.data('status') === 'stopped'){
+
+				if(!ui.currTaskName){
+					ui.currTaskName = gruntBridge.config.buildTaskList[0].name;
+				}
+
+				// $(this).prop('disabled',true);
+				$(this).text('中止构建').data('status','doing');
+				callback(ui.currTaskName);
+
+				e.stopImmediatePropagation();
+				
 			}
 
-			$(this).prop('disabled',true);
-			callback(ui.currTaskName);
+		});
+
+	};
+
+	ui.event.bindStopCompile = function(callback){
+
+		$('#operate button[type=submit]').click(function(){
+
+			var $this = $(this);
+			if($this.data('status') === 'doing'){
+
+				callback();
+				$(this).html('<span class="icon icon_tool"></span> 开始构建').data('status','stopped');
+				
+			}
 
 		});
 
@@ -178,9 +203,21 @@
 
 			if($this.hasClass('close_btn')){
 
+				var content = '确认要关闭kapok么？';
+
+				// 主页面退出时提供清理构建文件的选项
+				if(location.href.indexOf('main.html') > -1){
+					content += '<p class="checkList"><input type="checkbox" id="cleanKapokFiles" /><label for="cleanKapokFiles">（安全）清理构建使用的文件</label></p>';
+				}
+
 				showDialog({
-					content:'确认要关闭kapok么？'
+					content:content
 				}).done(function($dialog){
+					if($dialog.find('#cleanKapokFiles:checked').length){
+
+						kapok.removeBuildingFiles();
+
+					}
 					gui.App.quit();
 				}).fail(function($dialog){
 					$dialog.remove();
