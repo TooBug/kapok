@@ -194,7 +194,7 @@
 	// 基本UI功能
 	$(function(){
 
-		var gui = require('nw.gui');
+		/*var gui = require('nw.gui');
 		var nativeWindow = gui.Window.get();
 
 		$('header').on('click','.close_btn,.max_btn,.min_btn',function(){
@@ -227,7 +227,7 @@
 				nativeWindow.minimize();
 			}
 
-		});
+		});*/
 
 		// 编辑具体的编译Job
 		/*$('#jobList').on('click','li',function(){

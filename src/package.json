@@ -1,12 +1,5 @@
 {
 	"name":"kapok",
-	"main":"landing.html",
-	"window":{
-		"icon": "icon.png",
-		"frame":false,
-		"toolbar": false,
-		"width":600,
-		"height":450,
-		"resizable":false
-	}
+	"version":"0.1.0beta1",
+	"main":"kapok.js"
 }

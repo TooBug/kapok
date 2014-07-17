@@ -1,123 +1,62 @@
-/* global jQuery,showDialog */
+/* global jQuery,showDialog,ui */
 
 (function($){
 
 'use strict';
 
-$('#projectFolder').change(function(e){
+$('#projectFolder').click(function(e){
+
+	var ipc = require('ipc');
+	var folderPath = ipc.sendSync('dialog', 'folderPath');
+
+	if(!folderPath.length){
+		return false;
+	}else{
+		folderPath = folderPath[0];
+	}
 
 	var path = require('path');
-	var $this = $(this);
+	var fs = require('fs');
 
-	var files = e.originalEvent.target.files;
-	var folderRegExp = /^([^\/]+)\//;
-	var folderPath;
-	var folderMatch;
+	var packageJsonPath = '';
+	var gruntfilePath = '';
 
-	if(!files || !files.length){
-		return false;
-	}
+	var packageJsonPaths = ['package.json','.kapok/package.json'];
+	var gruntfilePaths = ['Gruntfile.js','.kapok/Gruntfile.js'];
 
-	folderMatch = files[0].webkitRelativePath.match(folderRegExp);
-
-	if(!folderMatch || !folderMatch.length || folderMatch.length < 2){
-		return false;
-	}
-
-	$this.prop('disabled',true)
-			.closest('button').prop('disabled',true);
-
-	folderPath = files[0].path.replace(files[0].webkitRelativePath.replace(/\//g,path.sep),'') +
-			folderMatch[1];
-
-	setTimeout(function(){
-
-		var packageJsonPath = '';
-		var gruntfilePath = '';
-		var fileList = {
-			js:[],
-			css:[],
-			png:[],
-			other:[]
-		};
-		var careExtList = ['js','css','png'];
-		var excludeFileRegexp = /(?:\.svn|\.git|\.kapok|\.gitignore|\.DS_Store|\.localized|node_modules|thumbs\.db$|\.$|\.min\.js|\.min\.css)/;
-		var extRegexp = /\.([^\.]+)$/;
-
-
-
-		Array.prototype.forEach.call(files,function(file){
-
-			var filePath = file.webkitRelativePath.replace(folderMatch[1]+'/','');
-			var extMatch = filePath.match(extRegexp);
-			var ext = '';
-
-			if(filePath === 'package.json' ||
-					filePath === '.build/package.json' ||
-					filePath === '.kapok/package.json'){
-				packageJsonPath = path.dirname(filePath);
-			}
-
-			if(filePath === 'Gruntfile.js' ||
-					filePath === '.build/Gruntfile.js' ||
-					filePath === '.kapok/Gruntfile.js'){
-				gruntfilePath = path.dirname(filePath);
-			}
-
-			if(extMatch && extMatch.length && extMatch.length >= 2){
-				ext = extMatch[1];
-			}
-
-			if(!excludeFileRegexp.test(filePath)){
-
-				if(careExtList.indexOf(ext) > -1){
-					fileList[ext].push(filePath);
-				}else{
-					fileList.other.push(filePath);
-				}
-
-			}
-
-		});
-
-		localStorage.setItem('basePath',folderPath + path.sep);
-
-		if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
-			localStorage.setItem('gruntfilePath',gruntfilePath)
-			location.href = './main.html';
-		}else{
-			showDialog({
-				content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
-			}).done(function($dialog){
-				localStorage.setItem('gruntfilePath','.kapok');
-				location.href = './taskmarket.html';
-			}).fail(function($dialog){
-				$dialog.remove();
-				$this.prop('disabled',false)
-						.closest('button').prop('disabled',false);
-			});
+	packageJsonPaths.forEach(function(lookUpPath){
+		if(fs.existsSync(path.join(folderPath,lookUpPath))){
+			packageJsonPath = path.dirname(lookUpPath);
 		}
+	});
 
-		$this.val('');
+	gruntfilePaths.forEach(function(lookUpPath){
+		if(fs.existsSync(path.join(folderPath,lookUpPath))){
+			gruntfilePath = path.dirname(lookUpPath);
+		}
+	});
 
-		// console.log('package.json',hasPackageJson,'Gruntfile.js',hasGruntFile);
+	localStorage.setItem('basePath',folderPath + path.sep);
 
-		// console.log(fileList);
+	if(packageJsonPath && gruntfilePath && packageJsonPath === gruntfilePath){
+		localStorage.setItem('gruntfilePath',gruntfilePath);
+		location.href = './main.html';
+	}else{
+		showDialog({
+			content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
+		}).done(function($dialog){
+			localStorage.setItem('gruntfilePath','.kapok');
+			location.href = './taskmarket.html';
+		}).fail(function($dialog){
+			$dialog.remove();
+		});
+	}
 
-	},0);
-
-
-}).on('click',function(){
-	/*var $this = $(this);
-	setTimeout(function(){
-		$this.prop('disabled',true)
-				.closest('button').prop('disabled',true);
-	})*/
 });
 
 // 最近项目
 var recentProjects = JSON.parse(localStorage.getItem('recentProjects') || '[]');
-recentProjects.unshift({"name":"选择最近项目"});
+recentProjects.unshift({'name':'选择最近项目'});
 
 ui.landing.setRecentProjects(recentProjects);
 ui.event.bindRecentProjectSwitch(function(value){
