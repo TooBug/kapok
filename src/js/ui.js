@@ -57,7 +57,7 @@
 	ui.main.enableCompileBtn = function(){
 
 		// $('#operate button[type=submit]').prop('disabled',false);
-		$('#operate button[type=submit]').text('开始编译');
+		$('#operate button[type=submit]').data('status','stopped').text('开始编译');
 
 	};
 

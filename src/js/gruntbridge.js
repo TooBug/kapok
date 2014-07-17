@@ -52,7 +52,6 @@
 		// 解析标准输出
 		parseOutput:function(output,jobProgress){
 			
-			
 			output = output + '';
 			// 过滤控制颜色的标识，类似[4m、[32m
 			output = output.replace(/\[\d{1,2}m/g,'');
@@ -192,35 +191,40 @@
 		var jobProgress = [];
 		$(window).trigger('gruntBridge.jobStart');
 
-		var spawn = require('child_process').spawn,
-			grunt;
+		var fork = require('child_process').fork,
+			grunt = require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,'node_modules/grunt'));
 
-		// grunt = spawn('which',['node','grunt']);
-		grunt = spawn(nodePath,[gruntPath,taskName],{
-			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
-		});
+		var oldLog = grunt.log;
 
-		// 捕获标准输出
-		grunt.stdout.on('data', function(output){
-			console.log(output+'');
-			helper.parseOutput(output,jobProgress);
-			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
-		});
+		grunt.log = {};
 
-		// 捕获标准错误输出并将其打印到控制台
-		grunt.stderr.on('data', function (data) {
-			console.log('标准错误输出：\n' + data);
-			$(window).trigger('gruntBridge.error',[data]);
-		});
+		for(var key in oldLog){
+			grunt.log[key] = function(key){
+				return function(){
+					var oldFunc = oldLog[key];
+					if(['write','writeln','header'].indexOf(key)>-1){
+						helper.parseOutput(arguments[0],jobProgress);
+						console.log('write');
+						$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
+					}else if(key === 'error'){
+						console.log('error');
+						$(window).trigger('gruntBridge.error',arguments);
+					}
+					// console.log(key,arguments[0]);
+					return oldFunc.apply(oldLog,arguments);
+				};
+			}(key);
+		}
 
-		// 注册子进程关闭事件
-		grunt.on('exit', function (code, signal) {
-			helper.parseExit(code,jobProgress);
-			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
+		grunt.tasks([taskName],{
+			color:false,
+			gruntfile:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,'Gruntfile.js')
+		},function(){
+			console.log('done');
 			$(window).trigger('gruntBridge.exit',[jobProgress]);
+			// process.send('custom','done');
 		});
 
-		gruntBridge._gruntProcess = grunt;
 
 	};
 
