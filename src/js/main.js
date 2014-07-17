@@ -138,14 +138,14 @@ $(function(){
 
 	});
 
-	var gui = require('nw.gui');
-	var win = gui.Window.get();
+	// var gui = require('nw.gui');
+	// var win = gui.Window.get();
 
-	win.on('closed',function(){
+	// win.on('closed',function(){
 
-		gruntBridge._gruntProcess.kill();
+		// gruntBridge._gruntProcess.kill();
 
-	});
+	// });
 
 	try{
 		kapok.init();

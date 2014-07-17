@@ -11,7 +11,11 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-	mainWindow = new BrowserWindow({width: 600, height: 450});
+	mainWindow = new BrowserWindow({
+		width: 600,
+		height: 450,
+		'use-content-size':true
+	});
 	mainWindow.loadUrl('file://' + __dirname + '/landing.html');
 	mainWindow.on('closed', function() {
 		mainWindow = null;
