@@ -3,20 +3,6 @@
 
 	'use strict';
 
-	var osType = require('os').type();
-	var isWindows = /windows/i.test(osType);
-
-	var nodePath,npmPath,gruntPath;
-	if(isWindows){
-		nodePath = 'node';
-		npmPath = 'npm.cmd';
-		gruntPath = 'C:\\Documents and Settings\\Administrator\\Application Data\\npm\\node_modules\\grunt-cli\\bin\\grunt';
-	}else{
-		nodePath = '/usr/local/bin/node';
-		npmPath = '/usr/local/bin/npm';
-		gruntPath = '/usr/local/bin/grunt';
-	}
-
 	var path = require('path');
 
 	// 用于与Grunt通讯的对象，负责读取及调用Grunt
@@ -44,7 +30,6 @@
 
 	// 辅助方法
 	var helper = {
-		// 用于grunt对象
 		readJSON:function(filePath){
 			// return require('./'+path.join(gruntBridge.basePath,filePath));
 			return require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,filePath));
@@ -145,16 +130,6 @@
 		}
 	};
 
-	// 包装的伪grunt对象，用于读取Gruntfile配置
-	var grunt = {
-		initConfig:readJobs,
-		loadNpmTasks:readPlugins,
-		registerTask:readTasks,
-		file:{
-			readJSON:helper.readJSON
-		}
-	};
-
 	gruntBridge.initConfig = function(projectPath,gruntfilePath,shouldGetConfig){
 
 		gruntBridge.basePath = projectPath;
@@ -178,8 +153,27 @@
 		if(!packageName){
 			packageName = 'package.json';
 		}
-		var gruntFunc = require(gruntFileName);
-		gruntFunc(grunt);
+
+		var grunt = require(path.join(this.basePath,this.gruntfilePath,'./node_modules/grunt'));
+
+		var originalLoadNpmTasks = grunt.loadNpmTasks;
+		var originalRegisterTask = grunt.registerTask;
+
+		grunt.loadNpmTasks = function(){
+			readPlugins.apply(null,arguments);
+			originalLoadNpmTasks.apply(grunt,arguments);
+		};
+
+		grunt.registerTask = function(){
+			readTasks.apply(null,arguments);
+			originalRegisterTask.apply(grunt,arguments);
+		};
+
+		grunt.option('gruntfile',gruntFileName);
+
+		grunt.task.init([]);
+
+		readJobs(grunt.config.data);
 
 		gruntBridge.config.package = helper.readJSON(packageName);
 	};
