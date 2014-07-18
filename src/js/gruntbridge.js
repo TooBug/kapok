@@ -191,38 +191,20 @@
 		var jobProgress = [];
 		$(window).trigger('gruntBridge.jobStart');
 
-		var fork = require('child_process').fork,
-			grunt = require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,'node_modules/grunt'));
+		var fork = require('child_process').fork;
 
-		var oldLog = grunt.log;
-
-		grunt.log = {};
-
-		for(var key in oldLog){
-			grunt.log[key] = function(key){
-				return function(){
-					var oldFunc = oldLog[key];
-					if(['write','writeln','header'].indexOf(key)>-1){
-						helper.parseOutput(arguments[0],jobProgress);
-						console.log('write');
-						$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
-					}else if(key === 'error'){
-						console.log('error');
-						$(window).trigger('gruntBridge.error',arguments);
-					}
-					// console.log(key,arguments[0]);
-					return oldFunc.apply(oldLog,arguments);
-				};
-			}(key);
-		}
-
-		grunt.tasks([taskName],{
-			color:false,
-			gruntfile:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,'Gruntfile.js')
-		},function(){
+		var grunt = fork(__dirname+'/js/forkgrunt',[taskName],{
+			cwd:gruntBridge.basePath+gruntBridge.gruntfilePath
+		}).on('message',function(m){
+			if(['write','writeln','header'].indexOf(m[0])>-1){
+				helper.parseOutput(m[1],jobProgress);
+				$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
+			}else if(m[0] === 'error'){
+				$(window).trigger('gruntBridge.error',m[1]);
+			}
+		}).on('exit',function(){
 			console.log('done');
 			$(window).trigger('gruntBridge.exit',[jobProgress]);
-			// process.send('custom','done');
 		});
 
 
