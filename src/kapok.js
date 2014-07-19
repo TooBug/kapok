@@ -32,3 +32,11 @@ ipc.on('dialog',function(event,arg) {
 		});
 	}
 });
+
+ipc.on('window',function(event,arg){
+	if(arg === 'close'){
+		console.log('enter close');
+		mainWindow.close();
+		event.returnValue = true;
+	}
+});

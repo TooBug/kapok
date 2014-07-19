@@ -187,7 +187,7 @@
 
 		var fork = require('child_process').fork;
 
-		var grunt = fork(__dirname+'/js/forkgrunt',[taskName],{
+		gruntBridge.running = fork(__dirname+'/js/forkgrunt',[taskName],{
 			cwd:gruntBridge.basePath+gruntBridge.gruntfilePath
 		}).on('message',function(m){
 			if(['write','writeln','header'].indexOf(m[0])>-1){
@@ -198,6 +198,7 @@
 			}
 		}).on('exit',function(){
 			console.log('done');
+			gruntBridge.running = null;
 			$(window).trigger('gruntBridge.exit',[jobProgress]);
 		});
 
