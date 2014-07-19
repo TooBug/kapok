@@ -20,7 +20,11 @@ app.on('ready', function() {
 	mainWindow.on('closed', function() {
 		mainWindow = null;
 	});
-	mainWindow.openDevTools();
+
+	// 开发环境打开调试工具
+	if(!/app$/.test(__dirname)){
+		mainWindow.openDevTools();
+	}
 });
 
 var ipc = require('ipc');
