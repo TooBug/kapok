@@ -43,10 +43,12 @@ $('#projectFolder').click(function(e){
 		location.href = './main.html';
 	}else{
 		showDialog({
-			content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
+			// content:'项目目录未找到Grunt构建文件，是否要生成构建方案？'
+			content:'项目目录未找到Grunt构建文件，无法继续运行。'
 		}).done(function($dialog){
-			localStorage.setItem('gruntfilePath','.kapok');
-			location.href = './taskmarket.html';
+			// localStorage.setItem('gruntfilePath','.kapok');
+			// location.href = './taskmarket.html';
+			$dialog.remove();
 		}).fail(function($dialog){
 			$dialog.remove();
 		});
