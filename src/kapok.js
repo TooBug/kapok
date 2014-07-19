@@ -14,7 +14,8 @@ app.on('ready', function() {
 	mainWindow = new BrowserWindow({
 		width: 600,
 		height: 450,
-		'use-content-size':true
+		'use-content-size':true,
+		resizable:false
 	});
 	mainWindow.loadUrl('file://' + __dirname + '/landing.html');
 	mainWindow.on('closed', function() {
