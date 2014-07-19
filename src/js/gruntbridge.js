@@ -41,9 +41,9 @@
 			// 过滤控制颜色的标识，类似[4m、[32m
 			output = output.replace(/\[\d{1,2}m/g,'');
 
-			var newJobPattern = /Running "(.*)" \((\w+)\) task/m;
+			var newJobPattern = /Running "(.*)" (?:\((\w+)\) )?task/m;
 			var newJobMatch = output.match(newJobPattern);
-			// console.dir(newJobMatch);
+			console.dir(newJobMatch);
 
 			if(newJobMatch && newJobMatch.length && newJobMatch.length >= 3){
 				// 进入新Job
@@ -401,6 +401,7 @@
 	};
 
 	function readTasks(taskName,taskJobList){
+		if(!taskJobList || !Array.isArray(taskJobList) || !taskJobList.length) return;
 		gruntBridge.config.buildTaskList = gruntBridge.config.buildTaskList || [];
 		gruntBridge.config.buildTaskList.push({
 			name:taskName,

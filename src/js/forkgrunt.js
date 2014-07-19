@@ -6,13 +6,17 @@ var oldLog = grunt.log;
 grunt.log = {};
 
 for(var key in oldLog){
-	grunt.log[key] = function(key){
-		return function(){
-			var oldFunc = oldLog[key];
-			process.send([key,arguments[0]]);
-			return oldFunc.apply(oldLog,arguments);
-		};
-	}(key);
+	if(['write','writeln','header','error'].indexOf(key) > -1){
+		grunt.log[key] = function(key){
+			return function(){
+				var oldFunc = oldLog[key];
+				process.send([key,arguments[0]]);
+				return oldFunc.apply(oldLog,arguments);
+			};
+		}(key);
+	}else{
+		grunt.log[key] = oldLog[key];
+	}
 }
 
 grunt.tasks([taskName],{
