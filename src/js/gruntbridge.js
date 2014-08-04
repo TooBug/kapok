@@ -220,17 +220,20 @@
 			}else{
 				var folder = path.join(gruntBridge.basePath,gruntBridge.gruntfilePath);
 				npm.commands.install(folder,[],function (err, data) {
-					// console.log(data);
 					progress('npmInstallOutput',data+'');
 					if (err){
 						fail(err);
+					}else{
+						success(data);
 					}
 				});
 			}
-		});
-		npm.on('log', function (message) {
-			console.log('log',message);
-			progress('npmInstallOutput',message);
+			npm.registry.log.on('log', function (data) {
+				// console.log('log',data.message);
+				if(['warn','info'].indexOf(data.level) > -1){
+					progress('npmInstallOutput',data.message);
+				}
+			});
 		});
 
 		/*var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');

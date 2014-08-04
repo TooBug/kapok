@@ -95,7 +95,7 @@
 					msg = '开始下载：<br />';
 					break;
 				case 'npmInstallOutput':
-					msg = data.replace(/\n/g,'<br />');
+					msg = data.replace(/\n/g,'<br />')+'<br />';
 					break;
 				case 'npmInstallError':
 					msg = data + '<br />';
