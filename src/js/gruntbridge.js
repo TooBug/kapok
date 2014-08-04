@@ -211,7 +211,32 @@
 
 		progress('proxyStart');
 
-		var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
+		var packageConfig = require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,'package.json'));
+
+		var npm = require('npm');
+		npm.load(packageConfig, function (err) {
+			if (err){
+				fail(err);
+			}else{
+				var folder = path.join(gruntBridge.basePath,gruntBridge.gruntfilePath);
+				npm.commands.install(folder,[],function (err, data) {
+					progress('npmInstallOutput',data+'');
+					if (err){
+						fail(err);
+					}else{
+						success(data);
+					}
+				});
+			}
+			npm.registry.log.on('log', function (data) {
+				// console.log('log',data.message);
+				if(['warn','info'].indexOf(data.level) > -1){
+					progress('npmInstallOutput',data.message);
+				}
+			});
+		});
+
+		/*var proxyStr = require('nw.gui').App.getProxyForURL('https://registry.npmjs.org/');
 		var proxyRegExp = /^PROXY (.*)$/;
 
 		var spawn = require('child_process').spawn;
@@ -286,7 +311,7 @@
 				}
 			});
 				
-		}
+		}*/
 
 	};
 
@@ -314,9 +339,11 @@
 			});
 		}
 
-		fs.mkdir(path.join(gruntBridge.basePath,'.kapok'),function(){
-			fs.writeFile(path.join(gruntBridge.basePath,'.kapok/package.json'),JSON.stringify(packageObj,null,'\t'),function(){});
-		});
+		var folder = path.join(gruntBridge.basePath,'.kapok');
+		if(!fs.existsSync(folder)){
+			fs.mkdirSync(folder);
+		}
+		fs.writeFileSync(path.join(gruntBridge.basePath,'.kapok/package.json'),JSON.stringify(packageObj,null,'\t'));
 
 	};
 
@@ -378,11 +405,11 @@
 				taskComponentsText +
 				'};';
 
-		// console.log(gruntFileContent);return;
-
-		fs.mkdir(path.join(gruntBridge.basePath,'.kapok'),function(){
-			fs.writeFile(path.join(gruntBridge.basePath,'.kapok/Gruntfile.js'),gruntFileContent,function(){});
-		});
+		var folder = path.join(gruntBridge.basePath,'.kapok');
+		if(!fs.existsSync(folder)){
+			fs.mkdirSync(folder);
+		}
+		fs.writeFileSync(path.join(gruntBridge.basePath,'.kapok/Gruntfile.js'),gruntFileContent);
 
 	};
 
