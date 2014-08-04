@@ -24,10 +24,12 @@ module.exports = function(grunt){
 					dest:'../tmp'
 				}]
 			},
-			nw:{
+			dist:{
 				files:[{
-					src:['app.nw'],
-					dest:'../other/kapok-tmpl.app/Contents/Resources/',
+					expand:true,
+					cwd:'../tmp',
+					src:'**',
+					dest:'../other/kapok-as-tmpl.app/Contents/Resources/app/',
 				}]
 			}
 		},
@@ -38,7 +40,7 @@ module.exports = function(grunt){
 			cleanTmp:['../tmp','./app.nw']
 		},
 		uglify:{
-			nw:{
+			dist:{
 				files:[{
 					src:['js/*.js','!js/*.min.js','!js/tquery*.js'],
 					dest:'../tmp/',
@@ -50,12 +52,11 @@ module.exports = function(grunt){
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-contrib-compress');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 
-	grunt.registerTask('nw', ['copy:prepareBuild','uglify:nw','compress:nw','copy:nw','clean:cleanTmp']);
-	grunt.registerTask('test', ['uglify:nw']);
+	grunt.registerTask('nw', ['copy:prepareBuild','uglify:dist','copy:dist','clean:cleanTmp']);
+	grunt.registerTask('test', ['uglify:dist']);
 
 };

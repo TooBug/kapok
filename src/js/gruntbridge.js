@@ -3,20 +3,6 @@
 
 	'use strict';
 
-	var osType = require('os').type();
-	var isWindows = /windows/i.test(osType);
-
-	var nodePath,npmPath,gruntPath;
-	if(isWindows){
-		nodePath = 'node';
-		npmPath = 'npm.cmd';
-		gruntPath = 'C:\\Documents and Settings\\Administrator\\Application Data\\npm\\node_modules\\grunt-cli\\bin\\grunt';
-	}else{
-		nodePath = '/usr/local/bin/node';
-		npmPath = '/usr/local/bin/npm';
-		gruntPath = '/usr/local/bin/grunt';
-	}
-
 	var path = require('path');
 
 	// 用于与Grunt通讯的对象，负责读取及调用Grunt
@@ -44,7 +30,6 @@
 
 	// 辅助方法
 	var helper = {
-		// 用于grunt对象
 		readJSON:function(filePath){
 			// return require('./'+path.join(gruntBridge.basePath,filePath));
 			return require(path.join(gruntBridge.basePath,gruntBridge.gruntfilePath,filePath));
@@ -52,14 +37,13 @@
 		// 解析标准输出
 		parseOutput:function(output,jobProgress){
 			
-			
 			output = output + '';
 			// 过滤控制颜色的标识，类似[4m、[32m
 			output = output.replace(/\[\d{1,2}m/g,'');
 
-			var newJobPattern = /Running "(.*)" \((\w+)\) task/m;
+			var newJobPattern = /Running "(.*)" (?:\((\w+)\) )?task/m;
 			var newJobMatch = output.match(newJobPattern);
-			// console.dir(newJobMatch);
+			console.dir(newJobMatch);
 
 			if(newJobMatch && newJobMatch.length && newJobMatch.length >= 3){
 				// 进入新Job
@@ -146,16 +130,6 @@
 		}
 	};
 
-	// 包装的伪grunt对象，用于读取Gruntfile配置
-	var grunt = {
-		initConfig:readJobs,
-		loadNpmTasks:readPlugins,
-		registerTask:readTasks,
-		file:{
-			readJSON:helper.readJSON
-		}
-	};
-
 	gruntBridge.initConfig = function(projectPath,gruntfilePath,shouldGetConfig){
 
 		gruntBridge.basePath = projectPath;
@@ -179,8 +153,27 @@
 		if(!packageName){
 			packageName = 'package.json';
 		}
-		var gruntFunc = require(gruntFileName);
-		gruntFunc(grunt);
+
+		var grunt = require(path.join(this.basePath,this.gruntfilePath,'./node_modules/grunt'));
+
+		var originalLoadNpmTasks = grunt.loadNpmTasks;
+		var originalRegisterTask = grunt.registerTask;
+
+		grunt.loadNpmTasks = function(){
+			readPlugins.apply(null,arguments);
+			originalLoadNpmTasks.apply(grunt,arguments);
+		};
+
+		grunt.registerTask = function(){
+			readTasks.apply(null,arguments);
+			originalRegisterTask.apply(grunt,arguments);
+		};
+
+		grunt.option('gruntfile',gruntFileName);
+
+		grunt.task.init([]);
+
+		readJobs(grunt.config.data);
 
 		gruntBridge.config.package = helper.readJSON(packageName);
 	};
@@ -192,35 +185,23 @@
 		var jobProgress = [];
 		$(window).trigger('gruntBridge.jobStart');
 
-		var spawn = require('child_process').spawn,
-			grunt;
+		var fork = require('child_process').fork;
 
-		// grunt = spawn('which',['node','grunt']);
-		grunt = spawn(nodePath,[gruntPath,taskName],{
-			cwd:path.join(gruntBridge.basePath,gruntBridge.gruntfilePath)
-		});
-
-		// 捕获标准输出
-		grunt.stdout.on('data', function(output){
-			console.log(output+'');
-			helper.parseOutput(output,jobProgress);
-			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
-		});
-
-		// 捕获标准错误输出并将其打印到控制台
-		grunt.stderr.on('data', function (data) {
-			console.log('标准错误输出：\n' + data);
-			$(window).trigger('gruntBridge.error',[data]);
-		});
-
-		// 注册子进程关闭事件
-		grunt.on('exit', function (code, signal) {
-			helper.parseExit(code,jobProgress);
-			$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
+		gruntBridge.running = fork(__dirname+'/js/forkgrunt',[taskName],{
+			cwd:gruntBridge.basePath+gruntBridge.gruntfilePath
+		}).on('message',function(m){
+			if(['write','writeln','header'].indexOf(m[0])>-1){
+				helper.parseOutput(m[1],jobProgress);
+				$(window).trigger('gruntBridge.jobProgress',[jobProgress]);
+			}else if(m[0] === 'error'){
+				$(window).trigger('gruntBridge.error',m[1]);
+			}
+		}).on('exit',function(){
+			console.log('done');
+			gruntBridge.running = null;
 			$(window).trigger('gruntBridge.exit',[jobProgress]);
 		});
 
-		gruntBridge._gruntProcess = grunt;
 
 	};
 
@@ -420,6 +401,7 @@
 	};
 
 	function readTasks(taskName,taskJobList){
+		if(!taskJobList || !Array.isArray(taskJobList) || !taskJobList.length) return;
 		gruntBridge.config.buildTaskList = gruntBridge.config.buildTaskList || [];
 		gruntBridge.config.buildTaskList.push({
 			name:taskName,
