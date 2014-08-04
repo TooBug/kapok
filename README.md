@@ -10,6 +10,16 @@ kapok
 使用方法
 =====
 
+首先在src目录中安装依赖fs-extra和npm：
+
+`npm install fs-extra npm`
+
+Atom-Shell:
+
+目前只研究了在Mac下如何运行，Windows运行方式可参考Atom-Shell官方文档。
+
+`/Applications/AtomShell.app/Contents/MacOS/Atom kapok目录`
+
 Node-Webkit:
 
 下载Node-Webkit二进制文件，然后
@@ -17,12 +27,6 @@ Node-Webkit:
 - Windows: `nw kapok目录`（含package.json的目录）
 - MacOs: `/Applications/node-webkit.app/Contents/MacOS/node-webkit kapok目录`
 
-
-Atom-Shell:
-
-目前只研究了在Mac下如何运行，Windows运行方式可参考Atom-Shell官方文档。
-
-`/Applications/AtomShell.app/Contents/MacOS/Atom kapok目录`
 
 更多
 =====
